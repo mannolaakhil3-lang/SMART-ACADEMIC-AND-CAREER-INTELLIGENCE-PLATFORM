@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Smart Academic & Career Intelligence Platform | Team G-2</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <nav class="navbar">
+    <a href="/" class="brand-container">
+      <div class="brand-icon">G2</div>
+      <div>
+        <div class="brand-title">Smart Career Intelligence</div>
+        <div class="brand-team">Team: G-2 Platform</div>
+      </div>
+    </a>
+    <div class="nav-links">
+      <a href="/" class="nav-link">Home</a>
+      <a href="/analysis" class="nav-link">Student Analysis</a>
+      <a href="/demo" class="btn btn-primary" style="padding: 0.5rem 1rem; font-size: 0.85rem;">Try Live Demo</a>
+    </div>
+  </nav>
+
+  <!-- Main Hero Content -->
+  <main class="main-content">
+    <section class="hero">
+      <div class="hero-tag">
+        <span class="badge badge-engine">Rule-Based Career Recommendation Engine</span>
+      </div>
+      <h1 class="hero-title">
+        SMART ACADEMIC AND<br>
+        <span>CAREER INTELLIGENCE PLATFORM</span>
+      </h1>
+      <p class="hero-subtitle">
+        Empowering students with transparent, rule-based career guidance. Analyze your academic CGPA, current skills, and key interests to unlock top career matches, pinpoint skill gaps, and follow a personalized step-by-step learning roadmap.
+      </p>
+
+      <div class="hero-actions">
+        <a href="/analysis" class="btn btn-primary btn-lg">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 14 14"></polyline></svg>
+          Start Analysis
+        </a>
+        <a href="/demo" class="btn btn-secondary btn-lg" id="home-try-demo-btn">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+          Try Demo
+        </a>
+      </div>
+    </section>
+
+    <!-- Supported Careers & Engine Pillars -->
+    <div class="card">
+      <div class="card-header">
+        <h2 class="card-title">Supported Career Paths & Intelligence Highlights</h2>
+        <span class="badge badge-primary">6 Target Career Profiles</span>
+      </div>
+      
+      <div class="features-grid">
+        <div class="feature-box">
+          <div class="feature-icon">📊</div>
+          <h3 class="feature-title">Data Analyst</h3>
+          <p class="feature-desc">SQL, Python, Business Intelligence dashboards, and actionable quantitative analysis.</p>
+        </div>
+        <div class="feature-box">
+          <div class="feature-icon">💻</div>
+          <h3 class="feature-title">Software Developer</h3>
+          <p class="feature-desc">Full-stack systems, OOP, data structures, algorithms, and modular architecture.</p>
+        </div>
+        <div class="feature-box">
+          <div class="feature-icon">🤖</div>
+          <h3 class="feature-title">AI/ML Engineer</h3>
+          <p class="feature-desc">Predictive modeling, deep learning architectures, Python, and data pipelines.</p>
+        </div>
+        <div class="feature-box">
+          <div class="feature-icon">🛡️</div>
+          <h3 class="feature-title">Cybersecurity Analyst</h3>
+          <p class="feature-desc">Network monitoring, threat response, vulnerability auditing, and system hardening.</p>
+        </div>
+        <div class="feature-box">
+          <div class="feature-icon">🎨</div>
+          <h3 class="feature-title">UI/UX Designer</h3>
+          <p class="feature-desc">Figma wireframing, empathetic user research, interactive prototypes, and design systems.</p>
+        </div>
+        <div class="feature-box">
+          <div class="feature-icon">📈</div>
+          <h3 class="feature-title">Business Analyst</h3>
+          <p class="feature-desc">Bridge technical requirements, business modeling, KPI metrics, and agile execution.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- How the Rule-Based Engine Works -->
+    <div class="card" style="margin-top: 1.5rem;">
+      <div class="card-header">
+        <h2 class="card-title">Recommendation Engine Scoring Model</h2>
+        <span class="badge badge-engine">Transparent & Deterministic</span>
+      </div>
+      <div class="features-grid">
+        <div class="feature-box">
+          <div class="feature-icon">🎯</div>
+          <h3 class="feature-title">50% Skills Matching</h3>
+          <p class="feature-desc">Evaluates your current technical and problem-solving abilities against industry core profiles.</p>
+        </div>
+        <div class="feature-box">
+          <div class="feature-icon">💡</div>
+          <h3 class="feature-title">30% Interests Alignment</h3>
+          <p class="feature-desc">Measures passion and domain focus areas to ensure long-term career satisfaction.</p>
+        </div>
+        <div class="feature-box">
+          <div class="feature-icon">🎓</div>
+          <h3 class="feature-title">20% Academic CGPA</h3>
+          <p class="feature-desc">Factors in academic baseline performance to establish a well-grounded score.</p>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <p><strong>SMART ACADEMIC AND CAREER INTELLIGENCE PLATFORM</strong> | Team: G-2</p>
+    <p>Rule-Based Career Recommendation Engine &bull; Fast, Lightweight, and Deterministic</p>
+  </footer>
+
+  <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>

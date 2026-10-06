@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Career Intelligence Results | Team G-2</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <nav class="navbar">
+    <a href="/" class="brand-container">
+      <div class="brand-icon">G2</div>
+      <div>
+        <div class="brand-title">Smart Career Intelligence</div>
+        <div class="brand-team">Team: G-2 Platform</div>
+      </div>
+    </a>
+    <div class="nav-links">
+      <a href="/" class="nav-link">Home</a>
+      <a href="/analysis" class="btn btn-secondary" style="padding: 0.5rem 1rem; font-size: 0.85rem;">New Analysis</a>
+    </div>
+  </nav>
+
+  <!-- Main Results Container -->
+  <main class="main-content">
+
+    <!-- Results Top Banner -->
+    <section class="results-header-banner">
+      <div>
+        <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.5rem;">
+          <span class="badge badge-primary" style="background: rgba(37, 99, 235, 0.2); border-color: rgba(37, 99, 235, 0.5); color: #93c5fd;">
+            Analysis Complete
+          </span>
+          <span class="badge badge-engine" style="background: rgba(255, 255, 255, 0.1); border-color: rgba(255, 255, 255, 0.2); color: #e2e8f0;">
+            {{ results.engine_name }}
+          </span>
+        </div>
+        <h1 style="font-size: 1.85rem; font-weight: 800; color: #ffffff;">
+          Career Intelligence Report: {{ results.student.name }}
+        </h1>
+        <div class="student-info-grid">
+          <div class="student-meta-item">
+            Branch: <strong>{{ results.student.branch }}</strong>
+          </div>
+          <div class="student-meta-item">
+            CGPA: <strong>{{ "%.2f"|format(results.student.cgpa) }} / 10.0</strong>
+          </div>
+          <div class="student-meta-item">
+            Evaluated Skills: <strong>{{ results.student.skills|length }} Provided</strong>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <a href="/analysis" class="btn btn-primary">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+          Run Another Analysis
+        </a>
+      </div>
+    </section>
+
+    <!-- SECTION 1: TOP 3 CAREER RECOMMENDATIONS -->
+    <div class="card">
+      <div class="card-header">
+        <div>
+          <h2 class="card-title">1. TOP 3 CAREER RECOMMENDATIONS</h2>
+          <p style="font-size: 0.9rem; color: var(--text-muted); margin-top: 0.2rem;">
+            Ranked by deterministic rule-based evaluation of skills, interests, and academic standing.
+          </p>
+        </div>
+        <span class="badge badge-primary">Match Ranking</span>
+      </div>
+
+      <div class="recommendations-grid">
+        {% for rec in results.top_3_recommendations %}
+        <div class="career-card {% if loop.index == 1 %}rank-1{% endif %}">
+          <div class="rank-badge">Rank #{{ loop.index }}</div>
+          <h3 class="career-name">{{ rec.career }}</h3>
+          <p class="career-desc">{{ rec.description }}</p>
+          
+          <div class="match-metric">
+            <div class="match-percent-label">
+              <span>Match Rating</span>
+              <span class="num">{{ rec.match_percentage }}% Match</span>
+            </div>
+            <div class="progress-bar-container">
+              <div class="progress-bar-fill" data-width="{{ rec.match_percentage }}%" style="width: {{ rec.match_percentage }}%;"></div>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+
+    <!-- SECTION 2 & 3: MATCHING SKILLS & SKILL GAPS -->
+    <div class="details-section-grid">
+      <!-- 2. MATCHING SKILLS -->
+      <div class="card" style="margin-bottom: 0;">
+        <div class="card-header">
+          <h2 class="card-title" style="font-size: 1.1rem; color: #065f46;">
+            ✅ 2. MATCHING SKILLS
+          </h2>
+          <span class="badge" style="background: var(--success-bg); color: #065f46; border: 1px solid #a7f3d0;">
+            Found in Profile
+          </span>
+        </div>
+        <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem;">
+          Skills you currently possess that directly align with your #1 recommended career path (<strong>{{ results.primary_recommendation.career }}</strong>):
+        </p>
+        <div class="skill-tags-group">
+          {% if results.primary_recommendation.matching_skills %}
+            {% for skill in results.primary_recommendation.matching_skills %}
+              <div class="tag-pill matching">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                {{ skill }}
+              </div>
+            {% endfor %}
+          {% else %}
+            <p style="font-size: 0.85rem; color: var(--text-muted); font-style: italic;">No direct matching baseline skills found.</p>
+          {% endif %}
+        </div>
+      </div>
+
+      <!-- 3. SKILL GAPS -->
+      <div class="card" style="margin-bottom: 0;">
+        <div class="card-header">
+          <h2 class="card-title" style="font-size: 1.1rem; color: #991b1b;">
+            ⚠️ 3. SKILL GAPS
+          </h2>
+          <span class="badge" style="background: var(--danger-bg); color: #991b1b; border: 1px solid #fecaca;">
+            Needs Development
+          </span>
+        </div>
+        <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem;">
+          Core competencies absent from your current profile needed to excel as a <strong>{{ results.primary_recommendation.career }}</strong>:
+        </p>
+        <div class="skill-tags-group">
+          {% if results.primary_recommendation.skill_gaps %}
+            {% for gap in results.primary_recommendation.skill_gaps %}
+              <div class="tag-pill gap">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+                {{ gap }}
+              </div>
+            {% endfor %}
+          {% else %}
+            <p style="font-size: 0.85rem; color: #065f46; font-weight: 600;">Excellent! No major skill gaps detected for this role.</p>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION 4: RECOMMENDED SKILLS -->
+    <div class="card">
+      <div class="card-header">
+        <h2 class="card-title">4. RECOMMENDED SKILLS</h2>
+        <span class="badge badge-primary">Priority Focus Areas</span>
+      </div>
+      <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 1.25rem;">
+        Highest ROI technical skills to acquire next to boost your match percentage and industry readiness:
+      </p>
+      <div class="skill-tags-group">
+        {% for skill in results.primary_recommendation.recommended_skills %}
+          <div class="tag-pill recommended" style="font-size: 0.95rem; padding: 0.5rem 1rem;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+            {{ skill }}
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+
+    <!-- SECTION 5: PERSONALIZED LEARNING PLAN -->
+    <div class="card">
+      <div class="card-header">
+        <div>
+          <h2 class="card-title">5. PERSONALIZED LEARNING PLAN</h2>
+          <p style="font-size: 0.9rem; color: var(--text-muted); margin-top: 0.2rem;">
+            A structured 5-step roadmap tailored for your path toward becoming a successful <strong>{{ results.primary_recommendation.career }}</strong>.
+          </p>
+        </div>
+        <span class="badge badge-engine">Sequential Steps</span>
+      </div>
+
+      <div class="plan-steps-list">
+        {% for step in results.primary_recommendation.learning_plan %}
+        <div class="plan-step-item">
+          <div class="step-number-circle">{{ loop.index }}</div>
+          <div class="step-text">{{ step }}</div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+
+    <!-- Bottom Actions -->
+    <div style="display: flex; gap: 1rem; justify-content: center; margin-top: 2.5rem; margin-bottom: 2rem;">
+      <a href="/analysis" class="btn btn-secondary btn-lg">
+        Modify Parameters
+      </a>
+      <a href="/analysis?prefill=true" class="btn btn-outline btn-lg">
+        Re-run Demo Student
+      </a>
+      <button onclick="window.print()" class="btn btn-primary btn-lg">
+        Print / Save Report
+      </button>
+    </div>
+
+  </main>
+
+  <footer class="footer">
+    <p><strong>SMART ACADEMIC AND CAREER INTELLIGENCE PLATFORM</strong> | Team: G-2</p>
+    <p>Rule-Based Career Recommendation Engine &bull; Deterministic Scoring</p>
+  </footer>
+
+  <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>

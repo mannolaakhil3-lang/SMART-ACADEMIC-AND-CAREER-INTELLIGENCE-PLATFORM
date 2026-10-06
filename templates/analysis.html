@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Career Analysis | Team G-2</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <nav class="navbar">
+    <a href="/" class="brand-container">
+      <div class="brand-icon">G2</div>
+      <div>
+        <div class="brand-title">Smart Career Intelligence</div>
+        <div class="brand-team">Team: G-2 Platform</div>
+      </div>
+    </a>
+    <div class="nav-links">
+      <a href="/" class="nav-link">Home</a>
+      <a href="/analysis" class="nav-link" style="color: var(--primary); font-weight: 600;">Student Analysis</a>
+      <a href="/demo" class="btn btn-secondary" style="padding: 0.5rem 1rem; font-size: 0.85rem;">Run Demo</a>
+    </div>
+  </nav>
+
+  <!-- Analysis Form Container -->
+  <main class="main-content">
+    <div class="form-container">
+      
+      <!-- Demo Data Helper Banner -->
+      <div class="demo-helper-bar">
+        <div class="demo-helper-text">
+          💡 Want to see an instant evaluation? Click to prefill with the <strong>Demo Student</strong> profile.
+        </div>
+        <button type="button" class="btn btn-outline" id="fill-demo-btn" style="padding: 0.4rem 0.85rem; font-size: 0.85rem; background: #ffffff;">
+          Load Demo Values
+        </button>
+      </div>
+
+      <!-- Main Input Card -->
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <h1 class="card-title">Student Academic & Skills Profile</h1>
+            <p style="font-size: 0.9rem; color: var(--text-muted); margin-top: 0.25rem;">
+              Provide your details below to execute the <strong>Rule-Based Career Recommendation Engine</strong>.
+            </p>
+          </div>
+          <span class="badge badge-primary">Evaluation Form</span>
+        </div>
+
+        <form action="/analyze" method="POST" id="career-form">
+          <!-- Student Name and Branch -->
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label" for="name">
+                Student Name <span class="req">*</span>
+              </label>
+              <input 
+                type="text" 
+                id="name" 
+                name="name" 
+                class="form-control" 
+                placeholder="e.g. Demo Student" 
+                value="{{ data.name }}" 
+                required
+              >
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="branch">
+                Branch / Discipline <span class="req">*</span>
+              </label>
+              <input 
+                type="text" 
+                id="branch" 
+                name="branch" 
+                class="form-control" 
+                placeholder="e.g. CSE, IT, ECE, Mechanical" 
+                value="{{ data.branch }}" 
+                required
+              >
+            </div>
+          </div>
+
+          <!-- CGPA -->
+          <div class="form-group">
+            <label class="form-label" for="cgpa">
+              Current Academic CGPA <span class="req">*</span> <span class="hint">(Scale of 1.0 - 10.0)</span>
+            </label>
+            <input 
+              type="number" 
+              step="0.01" 
+              min="1.0" 
+              max="10.0" 
+              id="cgpa" 
+              name="cgpa" 
+              class="form-control" 
+              placeholder="e.g. 8.2" 
+              value="{{ data.cgpa }}" 
+              required
+            >
+          </div>
+
+          <!-- Skills -->
+          <div class="form-group">
+            <label class="form-label" for="skills">
+              Technical & Soft Skills <span class="req">*</span> <span class="hint">(Comma-separated)</span>
+            </label>
+            <textarea 
+              id="skills" 
+              name="skills" 
+              class="form-control" 
+              rows="3" 
+              placeholder="e.g. Python, SQL, Problem Solving, Communication" 
+              required
+            >{{ data.skills }}</textarea>
+          </div>
+
+          <!-- Interests -->
+          <div class="form-group">
+            <label class="form-label" for="interests">
+              Areas of Interest <span class="req">*</span> <span class="hint">(Comma-separated)</span>
+            </label>
+            <textarea 
+              id="interests" 
+              name="interests" 
+              class="form-control" 
+              rows="2" 
+              placeholder="e.g. Technology, Data Science, Analytics" 
+              required
+            >{{ data.interests }}</textarea>
+          </div>
+
+          <!-- Submission Button -->
+          <div style="margin-top: 2rem;">
+            <button type="submit" class="btn btn-primary btn-lg btn-block" id="analyze-btn">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+              ANALYZE MY CAREER
+            </button>
+          </div>
+        </form>
+      </div>
+
+    </div>
+  </main>
+
+  <footer class="footer">
+    <p><strong>SMART ACADEMIC AND CAREER INTELLIGENCE PLATFORM</strong> | Team: G-2</p>
+    <p>Powered by Rule-Based Career Recommendation Engine</p>
+  </footer>
+
+  <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
