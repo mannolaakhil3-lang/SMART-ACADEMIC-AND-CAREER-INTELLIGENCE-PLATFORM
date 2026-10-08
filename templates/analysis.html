@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Student Career Analysis | Team G-2</title>
+  <title>Student Profile Analysis | Team G-2</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
@@ -19,7 +19,7 @@
     </a>
     <div class="nav-links">
       <a href="/" class="nav-link">Home</a>
-      <a href="/analysis" class="nav-link" style="color: var(--primary); font-weight: 600;">Student Analysis</a>
+      <a href="/analysis" class="nav-link active">Student Analysis</a>
       <a href="/demo" class="btn btn-secondary" style="padding: 0.5rem 1rem; font-size: 0.85rem;">Run Demo</a>
     </div>
   </nav>
@@ -27,15 +27,30 @@
   <!-- Analysis Form Container -->
   <main class="main-content">
     <div class="form-container">
+
+      <!-- Server-Side Validation Error Alert -->
+      {% if error %}
+      <div class="alert-box alert-error" id="server-error-banner">
+        <div class="alert-icon">⚠️</div>
+        <div class="alert-content">
+          <strong>Validation Error:</strong> {{ error }}
+        </div>
+      </div>
+      {% endif %}
       
       <!-- Demo Data Helper Banner -->
       <div class="demo-helper-bar">
         <div class="demo-helper-text">
           💡 Want to see an instant evaluation? Click to prefill with the <strong>Demo Student</strong> profile.
         </div>
-        <button type="button" class="btn btn-outline" id="fill-demo-btn" style="padding: 0.4rem 0.85rem; font-size: 0.85rem; background: #ffffff;">
-          Load Demo Values
-        </button>
+        <div style="display: flex; gap: 0.5rem;">
+          <button type="button" class="btn btn-outline" id="fill-demo-btn" style="padding: 0.4rem 0.85rem; font-size: 0.85rem; background: #ffffff;">
+            Load Demo Values
+          </button>
+          <a href="/demo" class="btn btn-primary" style="padding: 0.4rem 0.85rem; font-size: 0.85rem;">
+            Instant Demo
+          </a>
+        </div>
       </div>
 
       <!-- Main Input Card -->
@@ -55,7 +70,7 @@
           <div class="form-row">
             <div class="form-group">
               <label class="form-label" for="name">
-                Student Name <span class="req">*</span>
+                Student Full Name <span class="req">*</span>
               </label>
               <input 
                 type="text" 
@@ -83,44 +98,72 @@
             </div>
           </div>
 
-          <!-- CGPA -->
-          <div class="form-group">
-            <label class="form-label" for="cgpa">
-              Current Academic CGPA <span class="req">*</span> <span class="hint">(Scale of 1.0 - 10.0)</span>
-            </label>
-            <input 
-              type="number" 
-              step="0.01" 
-              min="1.0" 
-              max="10.0" 
-              id="cgpa" 
-              name="cgpa" 
-              class="form-control" 
-              placeholder="e.g. 8.2" 
-              value="{{ data.cgpa }}" 
-              required
-            >
+          <!-- Academic Year and CGPA -->
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label" for="academic_year">
+                Academic Year <span class="req">*</span>
+              </label>
+              <select id="academic_year" name="academic_year" class="form-control" required>
+                <option value="1st Year" {% if data.academic_year == '1st Year' %}selected{% endif %}>1st Year (Freshman)</option>
+                <option value="2nd Year" {% if data.academic_year == '2nd Year' %}selected{% endif %}>2nd Year (Sophomore)</option>
+                <option value="3rd Year" {% if data.academic_year == '3rd Year' or not data.academic_year %}selected{% endif %}>3rd Year (Junior)</option>
+                <option value="4th Year" {% if data.academic_year == '4th Year' %}selected{% endif %}>4th Year (Senior)</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="cgpa">
+                Current Academic CGPA <span class="req">*</span> <span class="hint">(Scale of 0.0 - 10.0)</span>
+              </label>
+              <input 
+                type="number" 
+                step="0.01" 
+                min="0.0" 
+                max="10.0" 
+                id="cgpa" 
+                name="cgpa" 
+                class="form-control" 
+                placeholder="e.g. 8.2" 
+                value="{{ data.cgpa }}" 
+                required
+              >
+            </div>
           </div>
 
-          <!-- Skills -->
+          <!-- Technical Skills -->
           <div class="form-group">
             <label class="form-label" for="skills">
-              Technical & Soft Skills <span class="req">*</span> <span class="hint">(Comma-separated)</span>
+              Technical Skills <span class="req">*</span> <span class="hint">(Comma-separated: programming, tools, databases)</span>
             </label>
             <textarea 
               id="skills" 
               name="skills" 
               class="form-control" 
               rows="3" 
-              placeholder="e.g. Python, SQL, Problem Solving, Communication" 
+              placeholder="e.g. Python, SQL, Problem Solving" 
               required
             >{{ data.skills }}</textarea>
+          </div>
+
+          <!-- Soft Skills -->
+          <div class="form-group">
+            <label class="form-label" for="soft_skills">
+              Soft Skills & Interpersonal Competencies <span class="hint">(Comma-separated)</span>
+            </label>
+            <input 
+              type="text"
+              id="soft_skills" 
+              name="soft_skills" 
+              class="form-control" 
+              placeholder="e.g. Communication, Teamwork, Leadership, Time Management" 
+              value="{{ data.soft_skills }}"
+            >
           </div>
 
           <!-- Interests -->
           <div class="form-group">
             <label class="form-label" for="interests">
-              Areas of Interest <span class="req">*</span> <span class="hint">(Comma-separated)</span>
+              Areas of Interest & Domain Passions <span class="req">*</span> <span class="hint">(Comma-separated)</span>
             </label>
             <textarea 
               id="interests" 
@@ -132,11 +175,30 @@
             >{{ data.interests }}</textarea>
           </div>
 
-          <!-- Submission Button -->
-          <div style="margin-top: 2rem;">
-            <button type="submit" class="btn btn-primary btn-lg btn-block" id="analyze-btn">
+          <!-- Career Preference (Optional) -->
+          <div class="form-group">
+            <label class="form-label" for="career_preference">
+              Career Preference <span class="hint">(Optional focus area)</span>
+            </label>
+            <select id="career_preference" name="career_preference" class="form-control">
+              <option value="" {% if not data.career_preference %}selected{% endif %}>No Preference / Open to All</option>
+              <option value="Data Analyst" {% if data.career_preference == 'Data Analyst' %}selected{% endif %}>Data Analyst</option>
+              <option value="Software Developer" {% if data.career_preference == 'Software Developer' %}selected{% endif %}>Software Developer</option>
+              <option value="AI/ML Engineer" {% if data.career_preference == 'AI/ML Engineer' %}selected{% endif %}>AI/ML Engineer</option>
+              <option value="Cybersecurity Analyst" {% if data.career_preference == 'Cybersecurity Analyst' %}selected{% endif %}>Cybersecurity Analyst</option>
+              <option value="UI/UX Designer" {% if data.career_preference == 'UI/UX Designer' %}selected{% endif %}>UI/UX Designer</option>
+              <option value="Business Analyst" {% if data.career_preference == 'Business Analyst' %}selected{% endif %}>Business Analyst</option>
+            </select>
+          </div>
+
+          <!-- Form Action Buttons -->
+          <div class="form-action-group">
+            <button type="submit" class="btn btn-primary btn-lg" id="analyze-btn" style="flex: 2;">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
-              ANALYZE MY CAREER
+              ANALYZE MY PROFILE
+            </button>
+            <button type="button" class="btn btn-secondary btn-lg" id="reset-form-btn" style="flex: 1;">
+              Reset Form
             </button>
           </div>
         </form>
@@ -145,9 +207,47 @@
     </div>
   </main>
 
+  <!-- Interactive Processing Overlay (Page 3 Simulation) -->
+  <div id="processing-overlay" class="processing-overlay" style="display: none;">
+    <div class="processing-card">
+      <div class="processing-spinner"></div>
+      <h3 class="processing-title">Analyzing Student Profile</h3>
+      <p class="processing-subtitle">Executing Rule-Based Career Recommendation Engine...</p>
+
+      <div class="processing-steps-list">
+        <div class="proc-step" id="proc-step-1">
+          <span class="proc-icon">⏳</span>
+          <span class="proc-label">Academic performance analyzed</span>
+        </div>
+        <div class="proc-step" id="proc-step-2">
+          <span class="proc-icon">⏳</span>
+          <span class="proc-label">Skills identified & parsed</span>
+        </div>
+        <div class="proc-step" id="proc-step-3">
+          <span class="proc-icon">⏳</span>
+          <span class="proc-label">Interests analyzed & weighted</span>
+        </div>
+        <div class="proc-step" id="proc-step-4">
+          <span class="proc-icon">⏳</span>
+          <span class="proc-label">Career profiles compared (6 Tracks)</span>
+        </div>
+        <div class="proc-step" id="proc-step-5">
+          <span class="proc-icon">⏳</span>
+          <span class="proc-label">Skill gaps calculated & prioritized</span>
+        </div>
+        <div class="proc-step" id="proc-step-6">
+          <span class="proc-icon">⏳</span>
+          <span class="proc-label">Personalized learning roadmap generated</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <footer class="footer">
     <p><strong>SMART ACADEMIC AND CAREER INTELLIGENCE PLATFORM</strong> | Team: G-2</p>
-    <p>Powered by Rule-Based Career Recommendation Engine</p>
+    <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.25rem;">
+      Rule-Based Career Recommendation Engine &bull; Deterministic Compatibility Evaluation
+    </p>
   </footer>
 
   <script src="{{ url_for('static', filename='script.js') }}"></script>

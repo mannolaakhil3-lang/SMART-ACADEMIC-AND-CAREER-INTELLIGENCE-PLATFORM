@@ -18,7 +18,7 @@
       </div>
     </a>
     <div class="nav-links">
-      <a href="/" class="nav-link">Home</a>
+      <a href="/" class="nav-link active">Home</a>
       <a href="/analysis" class="nav-link">Student Analysis</a>
       <a href="/demo" class="btn btn-primary" style="padding: 0.5rem 1rem; font-size: 0.85rem;">Try Live Demo</a>
     </div>
@@ -35,11 +35,11 @@
         <span>CAREER INTELLIGENCE PLATFORM</span>
       </h1>
       <p class="hero-subtitle">
-        Empowering students with transparent, rule-based career guidance. Analyze your academic CGPA, current skills, and key interests to unlock top career matches, pinpoint skill gaps, and follow a personalized step-by-step learning roadmap.
+        Personalized academic insights, career recommendations, and skill-development guidance for engineering students. Built with an auditable, transparent rule-based engine.
       </p>
 
       <div class="hero-actions">
-        <a href="/analysis" class="btn btn-primary btn-lg">
+        <a href="/analysis" class="btn btn-primary btn-lg" id="home-start-analysis-btn">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 14 14"></polyline></svg>
           Start Analysis
         </a>
@@ -50,76 +50,251 @@
       </div>
     </section>
 
-    <!-- Supported Careers & Engine Pillars -->
-    <div class="card">
+    <!-- Platform Workflow Visual Stepper -->
+    <section class="card workflow-section">
       <div class="card-header">
-        <h2 class="card-title">Supported Career Paths & Intelligence Highlights</h2>
-        <span class="badge badge-primary">6 Target Career Profiles</span>
+        <div>
+          <h2 class="card-title">Platform Intelligence Workflow</h2>
+          <p style="font-size: 0.9rem; color: var(--text-muted); margin-top: 0.2rem;">
+            End-to-end procedural workflow from profile submission to personalized career execution.
+          </p>
+        </div>
+        <span class="badge badge-primary">6-Stage Pipeline</span>
+      </div>
+
+      <div class="stepper-container">
+        <div class="step-card">
+          <div class="step-badge">1</div>
+          <div class="step-icon">📋</div>
+          <div class="step-title">Student Profile</div>
+          <div class="step-caption">Academic Year, CGPA & Demographics</div>
+        </div>
+        <div class="stepper-arrow">➔</div>
+
+        <div class="step-card">
+          <div class="step-badge">2</div>
+          <div class="step-icon">🎓</div>
+          <div class="step-title">Academic Analysis</div>
+          <div class="step-caption">CGPA Normalization (20% Weight)</div>
+        </div>
+        <div class="stepper-arrow">➔</div>
+
+        <div class="step-card">
+          <div class="step-badge">3</div>
+          <div class="step-icon">💡</div>
+          <div class="step-title">Skill & Interest</div>
+          <div class="step-caption">Technical & Soft Skills (50% + 30%)</div>
+        </div>
+        <div class="stepper-arrow">➔</div>
+
+        <div class="step-card">
+          <div class="step-badge">4</div>
+          <div class="step-icon">🎯</div>
+          <div class="step-title">Career Intelligence</div>
+          <div class="step-caption">Top 3 Compatibility Scoring</div>
+        </div>
+        <div class="stepper-arrow">➔</div>
+
+        <div class="step-card">
+          <div class="step-badge">5</div>
+          <div class="step-icon">🔍</div>
+          <div class="step-title">Skill Gap</div>
+          <div class="step-caption">Prioritized Deficit Diagnostics</div>
+        </div>
+        <div class="stepper-arrow">➔</div>
+
+        <div class="step-card">
+          <div class="step-badge">6</div>
+          <div class="step-icon">🚀</div>
+          <div class="step-title">Learning Roadmap</div>
+          <div class="step-caption">5-Step Plan with Progress Tracking</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- About the Platform & How It Works -->
+    <div class="grid-2-col">
+      <div class="card">
+        <div class="card-header">
+          <h2 class="card-title">About The Platform</h2>
+          <span class="badge badge-primary">PBL Project Overview</span>
+        </div>
+        <p style="font-size: 0.95rem; color: var(--text-main); margin-bottom: 1rem; line-height: 1.7;">
+          The <strong>Smart Academic and Career Intelligence Platform</strong> was developed by <strong>Team G-2</strong> to address the uncertainty university students face when transitioning from academic coursework to professional careers.
+        </p>
+        <p style="font-size: 0.92rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 1rem;">
+          Rather than relying on uninterpretable black-box models or generic personality tests, our platform implements a <strong>deterministic, rule-based recommendation engine</strong>. By evaluating concrete competencies against curated industry profiles, it produces reproducible, verifiable career match scores.
+        </p>
+        <div class="alert-box alert-info">
+          <strong>Academic Note:</strong> Match scores represent deterministic suitability metrics based on current qualifications and provide clear paths for improvement.
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <h2 class="card-title">How It Works</h2>
+          <span class="badge badge-engine">3 Simple Steps</span>
+        </div>
+        <div class="how-it-works-list">
+          <div class="how-item">
+            <div class="how-num">1</div>
+            <div>
+              <h3 class="how-heading">Input Your Academic & Skill Profile</h3>
+              <p class="how-sub">Enter your CGPA, technical skills, soft skills, and domain interests into our structured profile form.</p>
+            </div>
+          </div>
+          <div class="how-item">
+            <div class="how-num">2</div>
+            <div>
+              <h3 class="how-heading">Deterministic Rule-Based Evaluation</h3>
+              <p class="how-sub">The engine computes weighted coverage: 50% skills match, 30% interest alignment, and 20% academic CGPA standing.</p>
+            </div>
+          </div>
+          <div class="how-item">
+            <div class="how-num">3</div>
+            <div>
+              <h3 class="how-heading">Receive Intelligence & Learning Roadmap</h3>
+              <p class="how-sub">Explore your Top 3 career matches, prioritize identified skill gaps, and track your personalized 5-step learning milestones.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Supported Career Paths -->
+    <section class="card" style="margin-top: 1.75rem;">
+      <div class="card-header">
+        <div>
+          <h2 class="card-title">Supported Career Tracks</h2>
+          <p style="font-size: 0.9rem; color: var(--text-muted); margin-top: 0.2rem;">
+            Curated industry profiles with benchmark core skills, recommended tools, and learning pathways.
+          </p>
+        </div>
+        <span class="badge badge-primary">6 Target Disciplines</span>
       </div>
       
       <div class="features-grid">
         <div class="feature-box">
           <div class="feature-icon">📊</div>
           <h3 class="feature-title">Data Analyst</h3>
-          <p class="feature-desc">SQL, Python, Business Intelligence dashboards, and actionable quantitative analysis.</p>
+          <p class="feature-desc">SQL, Python, Business Intelligence dashboards, Statistics, and actionable quantitative analysis.</p>
+          <div class="career-meta-tag">Core: Python &bull; SQL &bull; Power BI</div>
         </div>
         <div class="feature-box">
           <div class="feature-icon">💻</div>
           <h3 class="feature-title">Software Developer</h3>
-          <p class="feature-desc">Full-stack systems, OOP, data structures, algorithms, and modular architecture.</p>
+          <p class="feature-desc">Full-stack web applications, OOP, data structures, algorithms, CI/CD, and system architecture.</p>
+          <div class="career-meta-tag">Core: DSA &bull; Git &bull; System Design</div>
         </div>
         <div class="feature-box">
           <div class="feature-icon">🤖</div>
           <h3 class="feature-title">AI/ML Engineer</h3>
-          <p class="feature-desc">Predictive modeling, deep learning architectures, Python, and data pipelines.</p>
+          <p class="feature-desc">Predictive modeling, deep learning architectures, Python, PyTorch, and production inference APIs.</p>
+          <div class="career-meta-tag">Core: ML &bull; Deep Learning &bull; Math</div>
         </div>
         <div class="feature-box">
           <div class="feature-icon">🛡️</div>
           <h3 class="feature-title">Cybersecurity Analyst</h3>
-          <p class="feature-desc">Network monitoring, threat response, vulnerability auditing, and system hardening.</p>
+          <p class="feature-desc">Network monitoring, threat response, vulnerability auditing, Linux administration, and system hardening.</p>
+          <div class="career-meta-tag">Core: NetSec &bull; Linux &bull; Hacking</div>
         </div>
         <div class="feature-box">
           <div class="feature-icon">🎨</div>
           <h3 class="feature-title">UI/UX Designer</h3>
-          <p class="feature-desc">Figma wireframing, empathetic user research, interactive prototypes, and design systems.</p>
+          <p class="feature-desc">Figma wireframing, empathetic user research, interactive prototypes, accessibility, and design systems.</p>
+          <div class="career-meta-tag">Core: Figma &bull; UX Research &bull; Prototypes</div>
         </div>
         <div class="feature-box">
           <div class="feature-icon">📈</div>
           <h3 class="feature-title">Business Analyst</h3>
-          <p class="feature-desc">Bridge technical requirements, business modeling, KPI metrics, and agile execution.</p>
+          <p class="feature-desc">Bridge technical requirements, business modeling, KPI metrics, agile sprint delivery, and financial analysis.</p>
+          <div class="career-meta-tag">Core: BI &bull; BRD/FRD &bull; Agile/Scrum</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Scoring Engine Model & Technology Stack -->
+    <div class="grid-2-col" style="margin-top: 1.75rem;">
+      <div class="card">
+        <div class="card-header">
+          <h2 class="card-title">Recommendation Scoring Model</h2>
+          <span class="badge badge-engine">Deterministic Formula</span>
+        </div>
+        <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 1.25rem;">
+          Our engine applies a transparent, weighted multi-factor formula to compute your <strong>Career Match Score</strong>:
+        </p>
+        <div class="scoring-factor-item">
+          <div class="scoring-pill">50%</div>
+          <div>
+            <strong>Skills Matching:</strong> Evaluates your verified technical and soft skills against core role requisites.
+          </div>
+        </div>
+        <div class="scoring-factor-item">
+          <div class="scoring-pill" style="background: #e0f2fe; color: #0369a1; border-color: #bae6fd;">30%</div>
+          <div>
+            <strong>Interests Alignment:</strong> Measures domain curiosity and focus areas to ensure occupational longevity.
+          </div>
+        </div>
+        <div class="scoring-factor-item">
+          <div class="scoring-pill" style="background: #fef3c7; color: #92400e; border-color: #fde68a;">20%</div>
+          <div>
+            <strong>Academic Performance:</strong> Normalizes current CGPA on a standard 10.0 scale for baseline rigor.
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <h2 class="card-title">Technology Stack</h2>
+          <span class="badge badge-primary">Full-Stack Architecture</span>
+        </div>
+        <div class="tech-stack-grid">
+          <div class="tech-item">
+            <span class="tech-icon">🐍</span>
+            <div>
+              <strong>Python Flask</strong>
+              <p>Lightweight WSGI backend routing and deterministic engine orchestration.</p>
+            </div>
+          </div>
+          <div class="tech-item">
+            <span class="tech-icon">🌐</span>
+            <div>
+              <strong>HTML5 & Semantic UI</strong>
+              <p>Accessible, responsive page architecture adhering to academic web guidelines.</p>
+            </div>
+          </div>
+          <div class="tech-item">
+            <span class="tech-icon">🎨</span>
+            <div>
+              <strong>Custom Vanilla CSS</strong>
+              <p>Zero external heavy CSS dependencies, print media styles, and fluid layouts.</p>
+            </div>
+          </div>
+          <div class="tech-item">
+            <span class="tech-icon">⚡</span>
+            <div>
+              <strong>JavaScript & LocalStorage</strong>
+              <p>Client-side milestone progress tracking without database dependencies.</p>
+            </div>
+          </div>
         </div>
       </div>
     </div>
 
-    <!-- How the Rule-Based Engine Works -->
-    <div class="card" style="margin-top: 1.5rem;">
-      <div class="card-header">
-        <h2 class="card-title">Recommendation Engine Scoring Model</h2>
-        <span class="badge badge-engine">Transparent & Deterministic</span>
-      </div>
-      <div class="features-grid">
-        <div class="feature-box">
-          <div class="feature-icon">🎯</div>
-          <h3 class="feature-title">50% Skills Matching</h3>
-          <p class="feature-desc">Evaluates your current technical and problem-solving abilities against industry core profiles.</p>
-        </div>
-        <div class="feature-box">
-          <div class="feature-icon">💡</div>
-          <h3 class="feature-title">30% Interests Alignment</h3>
-          <p class="feature-desc">Measures passion and domain focus areas to ensure long-term career satisfaction.</p>
-        </div>
-        <div class="feature-box">
-          <div class="feature-icon">🎓</div>
-          <h3 class="feature-title">20% Academic CGPA</h3>
-          <p class="feature-desc">Factors in academic baseline performance to establish a well-grounded score.</p>
-        </div>
-      </div>
-    </div>
   </main>
 
   <footer class="footer">
-    <p><strong>SMART ACADEMIC AND CAREER INTELLIGENCE PLATFORM</strong> | Team: G-2</p>
-    <p>Rule-Based Career Recommendation Engine &bull; Fast, Lightweight, and Deterministic</p>
+    <div style="max-width: 1100px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: gap: 1rem;">
+      <div>
+        <p><strong>SMART ACADEMIC AND CAREER INTELLIGENCE PLATFORM</strong> | Team: G-2</p>
+        <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.25rem;">
+          Rule-Based Career Recommendation Engine &bull; College Problem-Based Learning (PBL) Project
+        </p>
+      </div>
+      <div>
+        <a href="/analysis" class="btn btn-outline" style="padding: 0.4rem 0.85rem; font-size: 0.85rem;">New Evaluation</a>
+      </div>
+    </div>
   </footer>
 
   <script src="{{ url_for('static', filename='script.js') }}"></script>

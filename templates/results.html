@@ -3,13 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Career Intelligence Results | Team G-2</title>
+  <title>Career Intelligence Report | Team G-2</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
-<body>
+<body data-student-name="{{ results.student.name }}" data-career-name="{{ results.primary_recommendation.career }}">
 
-  <!-- Navigation Bar -->
-  <nav class="navbar">
+  <!-- Navigation Bar (Hidden during print) -->
+  <nav class="navbar no-print">
     <a href="/" class="brand-container">
       <div class="brand-icon">G2</div>
       <div>
@@ -19,47 +19,128 @@
     </a>
     <div class="nav-links">
       <a href="/" class="nav-link">Home</a>
-      <a href="/analysis" class="btn btn-secondary" style="padding: 0.5rem 1rem; font-size: 0.85rem;">New Analysis</a>
+      <a href="/analysis" class="nav-link">New Analysis</a>
+      <button onclick="window.print()" class="btn btn-primary" id="top-nav-print-btn" style="padding: 0.5rem 1rem; font-size: 0.85rem;">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+        Print Report
+      </button>
     </div>
   </nav>
 
   <!-- Main Results Container -->
   <main class="main-content">
 
-    <!-- Results Top Banner -->
-    <section class="results-header-banner">
+    <!-- Print Only Official Header -->
+    <div class="print-only-header">
+      <div class="print-header-top">
+        <div>
+          <h1 class="print-header-title">SMART ACADEMIC AND CAREER INTELLIGENCE PLATFORM</h1>
+          <p class="print-header-sub">Official Student Assessment & Career Intelligence Dossier &bull; Team G-2 PBL</p>
+        </div>
+        <div class="print-header-badge">RULE-BASED EVALUATION</div>
+      </div>
+      <div class="print-divider"></div>
+    </div>
+
+    <!-- Results Top Banner (Screen display) -->
+    <section class="results-header-banner no-print">
       <div>
-        <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.5rem;">
-          <span class="badge badge-primary" style="background: rgba(37, 99, 235, 0.2); border-color: rgba(37, 99, 235, 0.5); color: #93c5fd;">
+        <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.5rem; flex-wrap: wrap;">
+          <span class="badge badge-primary" style="background: rgba(37, 99, 235, 0.25); border-color: rgba(37, 99, 235, 0.5); color: #93c5fd;">
             Analysis Complete
           </span>
-          <span class="badge badge-engine" style="background: rgba(255, 255, 255, 0.1); border-color: rgba(255, 255, 255, 0.2); color: #e2e8f0;">
+          <span class="badge badge-engine" style="background: rgba(255, 255, 255, 0.12); border-color: rgba(255, 255, 255, 0.25); color: #f1f5f9;">
             {{ results.engine_name }}
           </span>
+          {% if is_demo %}
+          <span class="badge" style="background: rgba(16, 185, 129, 0.25); color: #a7f3d0; border: 1px solid rgba(16, 185, 129, 0.4);">
+            Canonical Demo Profile
+          </span>
+          {% endif %}
         </div>
         <h1 style="font-size: 1.85rem; font-weight: 800; color: #ffffff;">
           Career Intelligence Report: {{ results.student.name }}
         </h1>
         <div class="student-info-grid">
           <div class="student-meta-item">
-            Branch: <strong>{{ results.student.branch }}</strong>
+            Branch: <strong>{{ results.student.branch }} ({{ results.student.academic_year }})</strong>
           </div>
           <div class="student-meta-item">
             CGPA: <strong>{{ "%.2f"|format(results.student.cgpa) }} / 10.0</strong>
           </div>
           <div class="student-meta-item">
-            Evaluated Skills: <strong>{{ results.student.skills|length }} Provided</strong>
+            Evaluated Skills: <strong>{{ results.student.skills|length }} Total</strong>
           </div>
+          {% if results.student.career_preference and results.student.career_preference != "None Specified" %}
+          <div class="student-meta-item">
+            Stated Preference: <strong>{{ results.student.career_preference }}</strong>
+          </div>
+          {% endif %}
         </div>
       </div>
 
-      <div>
-        <a href="/analysis" class="btn btn-primary">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
-          Run Another Analysis
+      <div class="banner-actions">
+        <a href="/analysis" class="btn btn-secondary">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>
+          Edit Profile
         </a>
+        <button onclick="window.print()" class="btn btn-primary" id="banner-print-btn">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+          Print Report
+        </button>
       </div>
     </section>
+
+    <!-- SECTION 11 IN SPEC: PROFILE SUMMARY CARD -->
+    <div class="card profile-summary-card">
+      <div class="card-header">
+        <div>
+          <h2 class="card-title">Profile Summary & Intelligence Overview</h2>
+          <p style="font-size: 0.9rem; color: var(--text-muted); margin-top: 0.2rem;">
+            Executive summary of evaluated candidate credentials and top recommendation outcome.
+          </p>
+        </div>
+        <span class="badge badge-primary">Executive Dossier</span>
+      </div>
+
+      <div class="summary-metrics-grid">
+        <div class="summary-metric-box">
+          <div class="metric-label">Student Name</div>
+          <div class="metric-value">{{ results.student.name }}</div>
+          <div class="metric-sub">{{ results.student.branch }} &bull; {{ results.student.academic_year }}</div>
+        </div>
+        <div class="summary-metric-box">
+          <div class="metric-label">Academic Standing</div>
+          <div class="metric-value">{{ "%.2f"|format(results.student.cgpa) }} <span style="font-size: 0.85rem; color: var(--text-muted);">/ 10.0</span></div>
+          <div class="metric-sub">CGPA Baseline (20% Weight)</div>
+        </div>
+        <div class="summary-metric-box highlight">
+          <div class="metric-label">Top Recommendation</div>
+          <div class="metric-value" style="color: var(--primary);">{{ results.primary_recommendation.career }}</div>
+          <div class="metric-sub">Rank #1 Best Fit Path</div>
+        </div>
+        <div class="summary-metric-box">
+          <div class="metric-label">Top Career Match Score</div>
+          <div class="metric-value" style="color: #059669;">{{ results.primary_recommendation.match_percentage }}% Match</div>
+          <div class="metric-sub">Rule-Based Compatibility</div>
+        </div>
+      </div>
+
+      <!-- Quick Learning Progress Tracker in Profile Summary -->
+      <div class="plan-summary-progress-bar-wrap">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+          <span style="font-size: 0.9rem; font-weight: 700; color: var(--secondary);">
+            Personalized Learning Plan Progress
+          </span>
+          <span id="plan-overall-progress-text" style="font-size: 0.85rem; font-weight: 600; color: var(--primary);">
+            0 of 5 Steps Completed (0%)
+          </span>
+        </div>
+        <div class="progress-bar-container" style="height: 8px;">
+          <div id="plan-overall-progress-bar" class="progress-bar-fill" style="width: 0%; background: linear-gradient(90deg, #10b981, #059669);"></div>
+        </div>
+      </div>
+    </div>
 
     <!-- SECTION 1: TOP 3 CAREER RECOMMENDATIONS -->
     <div class="card">
@@ -67,7 +148,7 @@
         <div>
           <h2 class="card-title">1. TOP 3 CAREER RECOMMENDATIONS</h2>
           <p style="font-size: 0.9rem; color: var(--text-muted); margin-top: 0.2rem;">
-            Ranked by deterministic rule-based evaluation of skills, interests, and academic standing.
+            Ranked by deterministic rule-based evaluation of skills (50%), interests (30%), and academic CGPA (20%).
           </p>
         </div>
         <span class="badge badge-primary">Match Ranking</span>
@@ -82,12 +163,23 @@
           
           <div class="match-metric">
             <div class="match-percent-label">
-              <span>Match Rating</span>
+              <span>Career Match Score</span>
               <span class="num">{{ rec.match_percentage }}% Match</span>
             </div>
             <div class="progress-bar-container">
               <div class="progress-bar-fill" data-width="{{ rec.match_percentage }}%" style="width: {{ rec.match_percentage }}%;"></div>
             </div>
+          </div>
+
+          <div class="card-action-bar no-print">
+            <button 
+              type="button" 
+              class="btn btn-outline btn-block view-career-details-btn"
+              data-career-index="{{ loop.index0 }}"
+              style="padding: 0.5rem; font-size: 0.85rem; margin-top: 1rem;"
+            >
+              View Role Details & Roadmap ➔
+            </button>
           </div>
         </div>
         {% endfor %}
@@ -107,7 +199,7 @@
           </span>
         </div>
         <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem;">
-          Skills you currently possess that directly align with your #1 recommended career path (<strong>{{ results.primary_recommendation.career }}</strong>):
+          These skills contribute strongly to the student's compatibility with the recommended careers:
         </p>
         <div class="skill-tags-group">
           {% if results.primary_recommendation.matching_skills %}
@@ -127,21 +219,25 @@
       <div class="card" style="margin-bottom: 0;">
         <div class="card-header">
           <h2 class="card-title" style="font-size: 1.1rem; color: #991b1b;">
-            ⚠️ 3. SKILL GAPS
+            ⚠️ 3. SKILL GAP ANALYSIS
           </h2>
           <span class="badge" style="background: var(--danger-bg); color: #991b1b; border: 1px solid #fecaca;">
-            Needs Development
+            Prioritized Deficits
           </span>
         </div>
         <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem;">
-          Core competencies absent from your current profile needed to excel as a <strong>{{ results.primary_recommendation.career }}</strong>:
+          Identified competency gaps required for the <strong>{{ results.primary_recommendation.career }}</strong> track:
         </p>
-        <div class="skill-tags-group">
+        <div class="skill-gaps-list">
           {% if results.primary_recommendation.skill_gaps %}
             {% for gap in results.primary_recommendation.skill_gaps %}
-              <div class="tag-pill gap">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
-                {{ gap }}
+              <div class="gap-item-card">
+                <div class="gap-item-info">
+                  <span class="gap-skill-name">{{ gap.skill }}</span>
+                </div>
+                <span class="priority-badge priority-{{ gap.priority|lower }}">
+                  {{ gap.priority }} PRIORITY
+                </span>
               </div>
             {% endfor %}
           {% else %}
@@ -152,26 +248,32 @@
     </div>
 
     <!-- SECTION 4: RECOMMENDED SKILLS -->
-    <div class="card">
+    <div class="card" style="margin-top: 1.75rem;">
       <div class="card-header">
-        <h2 class="card-title">4. RECOMMENDED SKILLS</h2>
-        <span class="badge badge-primary">Priority Focus Areas</span>
+        <div>
+          <h2 class="card-title">4. RECOMMENDED SKILLS</h2>
+          <p style="font-size: 0.9rem; color: var(--text-muted); margin-top: 0.2rem;">
+            Highest return-on-investment technical competencies prioritized for target roles.
+          </p>
+        </div>
+        <span class="badge badge-primary">High-Value Additions</span>
       </div>
-      <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 1.25rem;">
-        Highest ROI technical skills to acquire next to boost your match percentage and industry readiness:
-      </p>
-      <div class="skill-tags-group">
-        {% for skill in results.primary_recommendation.recommended_skills %}
-          <div class="tag-pill recommended" style="font-size: 0.95rem; padding: 0.5rem 1rem;">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
-            {{ skill }}
+      
+      <div class="recommended-skills-grid">
+        {% for item in results.primary_recommendation.recommended_skills_details %}
+        <div class="rec-skill-card">
+          <div class="rec-skill-top">
+            <h3 class="rec-skill-title">⭐ {{ item.skill }}</h3>
+            <span class="badge badge-engine" style="font-size: 0.7rem;">{{ item.related_career }}</span>
           </div>
+          <p class="rec-skill-reason">{{ item.reason }}</p>
+        </div>
         {% endfor %}
       </div>
     </div>
 
     <!-- SECTION 5: PERSONALIZED LEARNING PLAN -->
-    <div class="card">
+    <div class="card" style="margin-top: 1.75rem;">
       <div class="card-header">
         <div>
           <h2 class="card-title">5. PERSONALIZED LEARNING PLAN</h2>
@@ -179,37 +281,178 @@
             A structured 5-step roadmap tailored for your path toward becoming a successful <strong>{{ results.primary_recommendation.career }}</strong>.
           </p>
         </div>
-        <span class="badge badge-engine">Sequential Steps</span>
+        <span class="badge badge-engine">Sequential Execution</span>
       </div>
 
-      <div class="plan-steps-list">
+      <div class="learning-path-flow-bar">
+        <strong>Recommended Flow:</strong> {{ results.primary_recommendation.learning_path_flow }}
+      </div>
+
+      <div class="plan-steps-list" id="learning-plan-list">
         {% for step in results.primary_recommendation.learning_plan %}
-        <div class="plan-step-item">
-          <div class="step-number-circle">{{ loop.index }}</div>
-          <div class="step-text">{{ step }}</div>
+        <div class="plan-step-item" data-step-id="{{ loop.index }}">
+          <div class="step-number-circle">{{ step.step_number }}</div>
+          <div class="step-content">
+            <h3 class="step-title">{{ step.title }}</h3>
+            <p class="step-desc">{{ step.description }}</p>
+          </div>
+          <div class="step-status-control no-print">
+            <select class="status-select" data-step-index="{{ loop.index0 }}">
+              <option value="Not Started" selected>○ Not Started</option>
+              <option value="In Progress">◐ In Progress</option>
+              <option value="Completed">✓ Completed</option>
+            </select>
+          </div>
+          <!-- Print-friendly status badge -->
+          <div class="print-only-status print-status-badge">
+            <span class="print-status-text">Status: Pending</span>
+          </div>
         </div>
         {% endfor %}
       </div>
     </div>
 
-    <!-- Bottom Actions -->
-    <div style="display: flex; gap: 1rem; justify-content: center; margin-top: 2.5rem; margin-bottom: 2rem;">
+    <!-- SECTION 9 IN SPEC: CAREER COMPARISON MATRIX -->
+    <div class="card" style="margin-top: 1.75rem;">
+      <div class="card-header">
+        <div>
+          <h2 class="card-title">Career Comparison Matrix</h2>
+          <p style="font-size: 0.9rem; color: var(--text-muted); margin-top: 0.2rem;">
+            Side-by-side analysis of your top 3 evaluated career trajectories.
+          </p>
+        </div>
+        <span class="badge badge-primary">Comparative Diagnostics</span>
+      </div>
+
+      <div class="comparison-table-wrap">
+        <table class="comparison-table">
+          <thead>
+            <tr>
+              <th style="width: 22%;">Career Track</th>
+              <th style="width: 20%;">Career Match Score</th>
+              <th style="width: 20%;">Matching Skills</th>
+              <th style="width: 20%;">Primary Skill Gaps</th>
+              <th style="width: 18%;">Recommended Additions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for item in results.career_comparison %}
+            <tr class="{% if loop.index == 1 %}highlight-row{% endif %}">
+              <td>
+                <strong>{{ item.career }}</strong>
+                {% if loop.index == 1 %}
+                <span class="badge badge-primary" style="font-size: 0.65rem; margin-left: 0.25rem;">Rank 1</span>
+                {% endif %}
+              </td>
+              <td>
+                <div style="font-weight: 700; color: var(--primary); margin-bottom: 0.25rem;">
+                  {{ item.match_percentage }}% Match
+                </div>
+                <div class="progress-bar-container" style="height: 6px;">
+                  <div class="progress-bar-fill" style="width: {{ item.match_percentage }}%;"></div>
+                </div>
+              </td>
+              <td>
+                {% for sk in item.matching_skills %}
+                  <span class="mini-tag mini-match">{{ sk }}</span>
+                {% endfor %}
+              </td>
+              <td>
+                {% for gap in item.skill_gaps %}
+                  <span class="mini-tag mini-gap">{{ gap }}</span>
+                {% endfor %}
+              </td>
+              <td>
+                {% for rec in item.recommended_skills %}
+                  <span class="mini-tag mini-rec">{{ rec }}</span>
+                {% endfor %}
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Legal & Academic Disclaimer -->
+    <div class="disclaimer-card">
+      <div class="disclaimer-title">Official Evaluation Notice & Disclaimer</div>
+      <p class="disclaimer-text">
+        Career match scores are rule-based compatibility scores for the entered student profile and should be used as guidance rather than as a guaranteed career outcome. Recommendations are generated deterministically using weighted curricular heuristics (50% Skills, 30% Interests, 20% CGPA) and do not utilize black-box machine learning models.
+      </p>
+    </div>
+
+    <!-- Bottom Actions (Hidden during print) -->
+    <div class="results-action-bar no-print">
       <a href="/analysis" class="btn btn-secondary btn-lg">
         Modify Parameters
       </a>
       <a href="/analysis?prefill=true" class="btn btn-outline btn-lg">
         Re-run Demo Student
       </a>
-      <button onclick="window.print()" class="btn btn-primary btn-lg">
-        Print / Save Report
+      <button onclick="window.print()" class="btn btn-primary btn-lg" id="bottom-print-btn">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+        Download / Print Career Report
       </button>
     </div>
 
   </main>
 
-  <footer class="footer">
+  <!-- Career Details Modal (Page 10 in spec) -->
+  <div id="career-modal" class="modal-overlay" style="display: none;">
+    <div class="modal-card">
+      <div class="modal-header">
+        <div>
+          <h2 id="modal-career-title" class="modal-title">Career Details</h2>
+          <span id="modal-career-rank" class="badge badge-primary">Rank #1 Match</span>
+        </div>
+        <button type="button" class="modal-close-btn" id="modal-close-btn">&times;</button>
+      </div>
+
+      <div class="modal-body">
+        <div class="modal-section">
+          <h3 class="modal-sec-title">Role Overview</h3>
+          <p id="modal-career-overview" class="modal-sec-desc"></p>
+        </div>
+
+        <div class="modal-section">
+          <h3 class="modal-sec-title">Why You Match</h3>
+          <div id="modal-why-match" class="skill-tags-group"></div>
+        </div>
+
+        <div class="modal-section-grid">
+          <div>
+            <h3 class="modal-sec-title" style="color: #065f46;">Matching Skills</h3>
+            <div id="modal-matching-skills" class="skill-tags-group"></div>
+          </div>
+          <div>
+            <h3 class="modal-sec-title" style="color: #991b1b;">Skills to Improve (Gaps)</h3>
+            <div id="modal-skill-gaps" class="skill-tags-group"></div>
+          </div>
+        </div>
+
+        <div class="modal-section" style="margin-top: 1.25rem;">
+          <h3 class="modal-sec-title">Recommended Learning Path Flow</h3>
+          <div id="modal-learning-path-flow" class="modal-flow-box"></div>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" id="modal-dismiss-btn">Close Details</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Raw JSON Carrier for Client Modal Interaction -->
+  <script id="career-data-payload" type="application/json">
+    {{ results.top_3_recommendations|tojson }}
+  </script>
+
+  <footer class="footer no-print">
     <p><strong>SMART ACADEMIC AND CAREER INTELLIGENCE PLATFORM</strong> | Team: G-2</p>
-    <p>Rule-Based Career Recommendation Engine &bull; Deterministic Scoring</p>
+    <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.25rem;">
+      Rule-Based Career Recommendation Engine &bull; Deterministic Compatibility Evaluation
+    </p>
   </footer>
 
   <script src="{{ url_for('static', filename='script.js') }}"></script>
