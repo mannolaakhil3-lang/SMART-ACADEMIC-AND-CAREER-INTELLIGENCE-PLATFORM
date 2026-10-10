@@ -1,0 +1,227 @@
+{
+  "model_name": "Random Forest Classifier",
+  "accuracy": 86.67,
+  "precision": 86.4,
+  "recall": 86.67,
+  "f1_score": 86.1,
+  "test_samples": 150,
+  "train_samples": 450,
+  "total_samples": 600,
+  "classes": [
+    "AI/ML Engineer",
+    "Business Analyst",
+    "Cybersecurity Analyst",
+    "Data Analyst",
+    "Software Developer",
+    "UI/UX Designer"
+  ],
+  "confusion_matrix": [
+    [
+      24,
+      0,
+      0,
+      1,
+      0,
+      0
+    ],
+    [
+      0,
+      21,
+      0,
+      3,
+      0,
+      1
+    ],
+    [
+      0,
+      0,
+      23,
+      0,
+      2,
+      0
+    ],
+    [
+      6,
+      3,
+      1,
+      14,
+      1,
+      0
+    ],
+    [
+      0,
+      1,
+      1,
+      0,
+      23,
+      0
+    ],
+    [
+      0,
+      0,
+      0,
+      0,
+      0,
+      25
+    ]
+  ],
+  "classification_report": {
+    "AI/ML Engineer": {
+      "precision": 0.8,
+      "recall": 0.96,
+      "f1-score": 0.8727272727272727,
+      "support": 25.0
+    },
+    "Business Analyst": {
+      "precision": 0.84,
+      "recall": 0.84,
+      "f1-score": 0.84,
+      "support": 25.0
+    },
+    "Cybersecurity Analyst": {
+      "precision": 0.92,
+      "recall": 0.92,
+      "f1-score": 0.92,
+      "support": 25.0
+    },
+    "Data Analyst": {
+      "precision": 0.7777777777777778,
+      "recall": 0.56,
+      "f1-score": 0.6511627906976745,
+      "support": 25.0
+    },
+    "Software Developer": {
+      "precision": 0.8846153846153846,
+      "recall": 0.92,
+      "f1-score": 0.9019607843137255,
+      "support": 25.0
+    },
+    "UI/UX Designer": {
+      "precision": 0.9615384615384616,
+      "recall": 1.0,
+      "f1-score": 0.9803921568627451,
+      "support": 25.0
+    },
+    "accuracy": 0.8666666666666667,
+    "macro avg": {
+      "precision": 0.863988603988604,
+      "recall": 0.8666666666666667,
+      "f1-score": 0.8610405007669031,
+      "support": 150.0
+    },
+    "weighted avg": {
+      "precision": 0.8639886039886039,
+      "recall": 0.8666666666666667,
+      "f1-score": 0.8610405007669029,
+      "support": 150.0
+    }
+  },
+  "feature_importances": [
+    {
+      "feature": "cpp",
+      "label": "C++ & System Programming",
+      "importance": 8.22
+    },
+    {
+      "feature": "cybersecurity",
+      "label": "Cybersecurity & Network Defense",
+      "importance": 8.16
+    },
+    {
+      "feature": "machine_learning",
+      "label": "Machine Learning & AI",
+      "importance": 7.55
+    },
+    {
+      "feature": "data_science_interest",
+      "label": "Data Science & Analytics Passion",
+      "importance": 7.33
+    },
+    {
+      "feature": "security_interest",
+      "label": "Information Security Passion",
+      "importance": 7.31
+    },
+    {
+      "feature": "design_interest",
+      "label": "Design & Aesthetics Passion",
+      "importance": 6.87
+    },
+    {
+      "feature": "java",
+      "label": "Java Development",
+      "importance": 6.29
+    },
+    {
+      "feature": "cgpa",
+      "label": "Academic CGPA",
+      "importance": 6.15
+    },
+    {
+      "feature": "ui_ux_design",
+      "label": "UI/UX & User-Centered Design",
+      "importance": 5.93
+    },
+    {
+      "feature": "business_interest",
+      "label": "Business & Strategy Passion",
+      "importance": 5.58
+    },
+    {
+      "feature": "research_interest",
+      "label": "Research & Theory Passion",
+      "importance": 4.35
+    },
+    {
+      "feature": "data_visualization",
+      "label": "Data Visualization & Dashboards",
+      "importance": 3.89
+    },
+    {
+      "feature": "statistics",
+      "label": "Applied Statistics & Probability",
+      "importance": 3.7
+    },
+    {
+      "feature": "sql",
+      "label": "SQL & Relational Databases",
+      "importance": 3.64
+    },
+    {
+      "feature": "python",
+      "label": "Python Programming",
+      "importance": 3.52
+    },
+    {
+      "feature": "leadership",
+      "label": "Leadership & Project Coordination",
+      "importance": 3.49
+    },
+    {
+      "feature": "javascript",
+      "label": "JavaScript & Web Tech",
+      "importance": 3.08
+    },
+    {
+      "feature": "technology_interest",
+      "label": "Technology Passion",
+      "importance": 1.67
+    },
+    {
+      "feature": "cloud_computing",
+      "label": "Cloud Computing & DevOps",
+      "importance": 1.42
+    },
+    {
+      "feature": "communication",
+      "label": "Professional Communication",
+      "importance": 1.15
+    },
+    {
+      "feature": "problem_solving",
+      "label": "Algorithmic & Problem Solving",
+      "importance": 0.68
+    }
+  ],
+  "dataset_disclaimer": "Synthetic/Demo Dataset created for academic project validation."
+}

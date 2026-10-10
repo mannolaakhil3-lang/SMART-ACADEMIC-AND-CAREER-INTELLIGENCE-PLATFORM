@@ -2,7 +2,7 @@
  * SMART ACADEMIC AND CAREER INTELLIGENCE PLATFORM (Team: G-2)
  * Client-side Controller & Dynamic Features
  * - Form pre-fill and reset helpers
- * - Real-time processing simulation overlay
+ * - Processing overlay with progressive step animation
  * - LocalStorage learning plan step persistence
  * - Interactive Career Details modal
  * - Print report handlers
@@ -16,7 +16,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const careerForm = document.getElementById("career-form");
   const fillDemoBtn = document.getElementById("fill-demo-btn");
   const resetFormBtn = document.getElementById("reset-form-btn");
-  const loadingOverlay = document.getElementById("loading-overlay");
+  const processingOverlay = document.getElementById("processing-overlay");
 
   if (fillDemoBtn) {
     fillDemoBtn.addEventListener("click", () => {
@@ -54,10 +54,30 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  if (careerForm && loadingOverlay) {
+  // Processing overlay with progressive step-by-step animation
+  if (careerForm && processingOverlay) {
     careerForm.addEventListener("submit", (e) => {
-      // Basic client-side sanity check
+      // Client-side validation
+      const nameInput = document.getElementById("name");
+      const branchInput = document.getElementById("branch");
       const cgpaInput = document.getElementById("cgpa");
+      const skillsInput = document.getElementById("skills");
+      const interestsInput = document.getElementById("interests");
+
+      if (nameInput && !nameInput.value.trim()) {
+        alert("Please enter the student's full name.");
+        nameInput.focus();
+        e.preventDefault();
+        return;
+      }
+
+      if (branchInput && !branchInput.value.trim()) {
+        alert("Please enter the student's branch.");
+        branchInput.focus();
+        e.preventDefault();
+        return;
+      }
+
       if (cgpaInput) {
         const cgpaVal = parseFloat(cgpaInput.value);
         if (isNaN(cgpaVal) || cgpaVal < 0 || cgpaVal > 10) {
@@ -68,27 +88,42 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       }
 
-      // Show processing overlay with progressive status messages
-      loadingOverlay.style.display = "flex";
-      const statusText = document.getElementById("loading-status-text");
-      const subText = document.getElementById("loading-sub-text");
+      if (skillsInput && !skillsInput.value.trim()) {
+        alert("Please add at least one skill.");
+        skillsInput.focus();
+        e.preventDefault();
+        return;
+      }
 
-      const stages = [
-        { main: "Evaluating Skill Sets...", sub: "Mapping technical competencies against industry rubrics" },
-        { main: "Calculating Match Scores...", sub: "Applying 50% Skills, 30% Interests, 20% CGPA rule-based weights" },
-        { main: "Generating Personalized Roadmap...", sub: "Compiling 5-step curriculum and priority gap analysis" }
+      if (interestsInput && !interestsInput.value.trim()) {
+        alert("Please add at least one interest.");
+        interestsInput.focus();
+        e.preventDefault();
+        return;
+      }
+
+      // Show processing overlay with progressive step completion
+      processingOverlay.style.display = "flex";
+
+      const steps = [
+        document.getElementById("proc-step-1"),
+        document.getElementById("proc-step-2"),
+        document.getElementById("proc-step-3"),
+        document.getElementById("proc-step-4"),
+        document.getElementById("proc-step-5"),
+        document.getElementById("proc-step-6")
       ];
 
-      let stageIdx = 0;
-      const interval = setInterval(() => {
-        stageIdx++;
-        if (stageIdx < stages.length) {
-          if (statusText) statusText.textContent = stages[stageIdx].main;
-          if (subText) subText.textContent = stages[stageIdx].sub;
-        } else {
-          clearInterval(interval);
+      // Animate each step completing progressively
+      steps.forEach((step, idx) => {
+        if (step) {
+          setTimeout(() => {
+            step.classList.add("completed");
+            const icon = step.querySelector(".proc-icon");
+            if (icon) icon.textContent = "✓";
+          }, 200 + idx * 250);
         }
-      }, 500);
+      });
     });
   }
 
@@ -117,7 +152,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const overallProgressBar = document.getElementById("plan-overall-progress-bar");
   const overallProgressText = document.getElementById("plan-overall-progress-text");
 
-  // Load saved step statuses from localStorage
   function loadPlanProgress() {
     let savedProgress = {};
     try {
@@ -223,23 +257,22 @@ document.addEventListener("DOMContentLoaded", () => {
     // Set Title & Rank
     document.getElementById("modal-career-title").textContent = data.career;
     document.getElementById("modal-career-rank").textContent = `Rank #${index + 1} • ${data.match_percentage}% Match`;
-    document.getElementById("modal-career-overview").textContent = data.description;
+    document.getElementById("modal-career-overview").textContent = data.overview || data.description;
 
-    // Why You Match Insights
+    // Why You Match - use actual why_match data from backend
     const whyContainer = document.getElementById("modal-why-match");
     whyContainer.innerHTML = "";
-    const reasons = [
-      `Deterministic match score: ${data.match_percentage}% based on your profile.`,
-      `Verified skills overlap: ${data.matching_skills.length} matching core competencies.`,
-      `Targeted curriculum roadmap: 5 sequential steps available to achieve production mastery.`
-    ];
-    reasons.forEach(r => {
-      const pill = document.createElement("div");
-      pill.className = "tag-pill recommended";
-      pill.style.fontSize = "0.8rem";
-      pill.textContent = r;
-      whyContainer.appendChild(pill);
-    });
+    const whyPoints = data.why_match || data.matching_skills || [];
+    if (whyPoints.length > 0) {
+      whyPoints.forEach(point => {
+        const pill = document.createElement("div");
+        pill.className = "tag-pill matching";
+        pill.innerHTML = `✓ ${point}`;
+        whyContainer.appendChild(pill);
+      });
+    } else {
+      whyContainer.innerHTML = `<span style="font-size: 0.85rem; color: #64748b;">Profile evaluation complete — see matching skills below.</span>`;
+    }
 
     // Matching Skills
     const matchContainer = document.getElementById("modal-matching-skills");
@@ -274,7 +307,7 @@ document.addEventListener("DOMContentLoaded", () => {
     flowBox.textContent = data.learning_path_flow || "Fundamentals → Core Frameworks → Hands-On Projects → Advanced Mastery";
 
     modal.style.display = "flex";
-    document.body.style.overflow = "hidden"; // Prevent background scrolling
+    document.body.style.overflow = "hidden";
   }
 
   function closeCareerModal() {

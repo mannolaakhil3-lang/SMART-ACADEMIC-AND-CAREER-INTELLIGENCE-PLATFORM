@@ -105,24 +105,39 @@
 
       <div class="summary-metrics-grid">
         <div class="summary-metric-box">
-          <div class="metric-label">Student Name</div>
+          <div class="metric-label">Student Profile</div>
           <div class="metric-value">{{ results.student.name }}</div>
-          <div class="metric-sub">{{ results.student.branch }} &bull; {{ results.student.academic_year }}</div>
-        </div>
-        <div class="summary-metric-box">
-          <div class="metric-label">Academic Standing</div>
-          <div class="metric-value">{{ "%.2f"|format(results.student.cgpa) }} <span style="font-size: 0.85rem; color: var(--text-muted);">/ 10.0</span></div>
-          <div class="metric-sub">CGPA Baseline (20% Weight)</div>
+          <div class="metric-sub">{{ results.student.branch }} &bull; {{ results.student.academic_year }} &bull; CGPA {{ "%.2f"|format(results.student.cgpa) }}</div>
         </div>
         <div class="summary-metric-box highlight">
-          <div class="metric-label">Top Recommendation</div>
+          <div class="metric-label">Rule-Based Match</div>
           <div class="metric-value" style="color: var(--primary);">{{ results.primary_recommendation.career }}</div>
-          <div class="metric-sub">Rank #1 Best Fit Path</div>
+          <div class="metric-sub">{{ results.primary_recommendation.match_percentage }}% Compatibility (Rank #1)</div>
+        </div>
+        <div class="summary-metric-box" style="border-color: #ddd6fe; background: #faf5ff;">
+          <div class="metric-label" style="color: #6d28d9;">ML Classification</div>
+          {% if ml_results and ml_results.available %}
+          <div class="metric-value" style="color: #7c3aed;">{{ ml_results.predicted_career }}</div>
+          <div class="metric-sub" style="color: #6b21a8;">{{ ml_results.confidence_score }}% Probability (Random Forest)</div>
+          {% else %}
+          <div class="metric-value" style="color: var(--text-muted); font-size: 1.15rem;">Rule-Only Mode</div>
+          <div class="metric-sub">Run train_model.py</div>
+          {% endif %}
         </div>
         <div class="summary-metric-box">
-          <div class="metric-label">Top Career Match Score</div>
-          <div class="metric-value" style="color: #059669;">{{ results.primary_recommendation.match_percentage }}% Match</div>
-          <div class="metric-sub">Rule-Based Compatibility</div>
+          <div class="metric-label">Dual Synthesis Status</div>
+          {% if hybrid_guidance and hybrid_guidance.hybrid_available %}
+            {% if hybrid_guidance.consensus %}
+            <div class="metric-value" style="color: #059669; font-size: 1.25rem;">Consensus Agreed</div>
+            <div class="metric-sub">{{ hybrid_guidance.hybrid_score }}% Combined Score</div>
+            {% else %}
+            <div class="metric-value" style="color: #2563eb; font-size: 1.25rem;">Dual Perspectives</div>
+            <div class="metric-sub">Rule vs ML Evaluated</div>
+            {% endif %}
+          {% else %}
+          <div class="metric-value" style="color: #059669;">{{ results.primary_recommendation.match_percentage }}%</div>
+          <div class="metric-sub">Rule-Based Score</div>
+          {% endif %}
         </div>
       </div>
 
@@ -183,6 +198,261 @@
           </div>
         </div>
         {% endfor %}
+      </div>
+    </div>
+
+    <!-- SECTION: MACHINE LEARNING CAREER PREDICTION & MODEL INTELLIGENCE -->
+    <div class="card" id="ml-prediction-section" style="margin-top: 1.75rem;">
+      <div class="card-header ml-card-header-gradient">
+        <div>
+          <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.25rem;">
+            <h2 class="card-title" style="color: #4c1d95;">🤖 MACHINE LEARNING CAREER PREDICTION</h2>
+            <span class="badge badge-ml">Random Forest Classifier</span>
+          </div>
+          <p style="font-size: 0.9rem; color: var(--text-muted);">
+            Supervised multi-class classification trained on 21 multi-dimensional academic & skill features using scikit-learn.
+          </p>
+        </div>
+        <span class="badge" style="background: #ede9fe; color: #6d28d9; border: 1px solid #ddd6fe;">Supervised ML</span>
+      </div>
+
+      {% if ml_results and ml_results.available %}
+      <!-- Top Prediction & Probabilities Grid -->
+      <div class="ml-prediction-hero">
+        <!-- Top Prediction Box -->
+        <div class="ml-top-prediction-box">
+          <div>
+            <div class="ml-pred-badge">
+              <span>🎯 Highest Statistical Likelihood</span>
+            </div>
+            <div style="font-size: 0.85rem; color: var(--text-muted); font-weight: 600; text-transform: uppercase;">
+              ML-Classified Career Path
+            </div>
+            <div class="ml-pred-career-name">
+              {{ ml_results.predicted_career }}
+            </div>
+            <p style="font-size: 0.9rem; color: #475569; line-height: 1.5;">
+              Based on the student's normalized feature vector (CGPA, technical stack, soft skills, and domain interests), the ensemble of decision trees classifies this student into the <strong>{{ ml_results.predicted_career }}</strong> cluster.
+            </p>
+          </div>
+
+          <div>
+            <div class="ml-prob-chip">
+              <span class="ml-prob-val">{{ ml_results.confidence_score }}%</span>
+              <span class="ml-prob-label">Prediction Probability</span>
+            </div>
+            <p style="font-size: 0.78rem; color: var(--text-muted); margin-top: 0.35rem;">
+              * Statistical class probability among 6 candidate tracks. Represents decision-tree voting proportion, not guaranteed real-world outcome.
+            </p>
+          </div>
+        </div>
+
+        <!-- Class Probabilities Bar Chart -->
+        <div class="ml-prob-bars-card">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.85rem;">
+            <h3 style="font-size: 0.95rem; font-weight: 700; color: var(--secondary);">
+              Ensemble Class Probability Distribution
+            </h3>
+            <span style="font-size: 0.75rem; color: var(--text-muted); font-weight: 600;">6 Classes</span>
+          </div>
+
+          <div class="ml-probabilities-list">
+            {% for item in ml_results.career_probabilities %}
+            <div class="ml-prob-item">
+              <div class="ml-prob-header">
+                <span class="career-title">
+                  {{ item.career }}
+                  {% if item.career == ml_results.predicted_career %}
+                  <span style="font-size: 0.75rem; color: #7c3aed; font-weight: 700;">(Top ML Pick)</span>
+                  {% endif %}
+                </span>
+                <span class="prob-num">{{ item.probability }}%</span>
+              </div>
+              <div class="ml-bar-track">
+                <div class="ml-bar-fill" style="width: {{ item.probability }}%;"></div>
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+
+      <!-- Active Profile Features & Importances -->
+      <div style="margin-bottom: 1.5rem; background: #faf5ff; border: 1px solid #e9d5ff; border-radius: var(--radius); padding: 1.25rem;">
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem;">
+          <div>
+            <h3 style="font-size: 0.95rem; font-weight: 700; color: #4c1d95;">
+              Active Profile Features & Model Feature Importance
+            </h3>
+            <p style="font-size: 0.82rem; color: #6b21a8; margin-top: 0.15rem;">
+              Features detected in the student's profile that contributed most heavily across the trained Random Forest trees:
+            </p>
+          </div>
+          <span style="font-size: 0.75rem; color: #7c3aed; font-weight: 600;">* Gini Impurity Reduction</span>
+        </div>
+
+        <div class="ml-features-wrap">
+          {% for feat in ml_results.active_features %}
+          <div class="ml-feature-tag">
+            <span>{{ feat.label }}</span>
+            <span class="feat-imp">{{ feat.model_importance }}% Importance</span>
+          </div>
+          {% endfor %}
+        </div>
+        <p style="font-size: 0.75rem; color: #7e22ce; margin-top: 0.65rem; font-style: italic;">
+          Notice: Feature importance measures overall model split contribution in the Random Forest and should not be interpreted as proof of causation.
+        </p>
+      </div>
+
+      <!-- Held-Out Model Evaluation Metrics (Strictly separated from individual student score) -->
+      <div>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem; flex-wrap: wrap; gap: 0.5rem;">
+          <div>
+            <h3 style="font-size: 0.95rem; font-weight: 700; color: var(--secondary);">
+              Held-Out Model Evaluation Benchmark
+            </h3>
+            <p style="font-size: 0.82rem; color: var(--text-muted);">
+              Independently measured on 150 unseen test records (25% stratified test split) from 600 total records:
+            </p>
+          </div>
+          <span class="badge" style="background: #f1f5f9; color: var(--secondary); border: 1px solid var(--border);">
+            Held-Out Test Set (N=150)
+          </span>
+        </div>
+
+        <div class="ml-metrics-strip">
+          <div class="ml-metric-tile">
+            <div class="tile-label">Test Accuracy</div>
+            <div class="tile-val" style="color: #059669;">{{ ml_results.metrics.accuracy }}%</div>
+            <div class="tile-sub">Overall Test Correctness</div>
+          </div>
+          <div class="ml-metric-tile">
+            <div class="tile-label">Weighted Precision</div>
+            <div class="tile-val" style="color: var(--primary);">{{ ml_results.metrics.precision }}%</div>
+            <div class="tile-sub">False Positive Resistance</div>
+          </div>
+          <div class="ml-metric-tile">
+            <div class="tile-label">Weighted Recall</div>
+            <div class="tile-val" style="color: #7c3aed;">{{ ml_results.metrics.recall }}%</div>
+            <div class="tile-sub">True Positive Coverage</div>
+          </div>
+          <div class="ml-metric-tile">
+            <div class="tile-label">Weighted F1-Score</div>
+            <div class="tile-val" style="color: #d97706;">{{ ml_results.metrics.f1_score }}%</div>
+            <div class="tile-sub">Harmonic Mean Balance</div>
+          </div>
+        </div>
+
+        <div class="notice-box-educational">
+          <strong>Academic Methodology & Dataset Disclosure:</strong>
+          The model uses a supervised Random Forest Classifier trained with 100 estimators and random seed 42. The dataset contains 600 records across 6 standard career domains (100 per class), clearly designated as a synthetic academic demonstration dataset. Evaluation metrics shown above reflect model generalization on held-out test data and are distinctly separated from an individual student's prediction probability.
+        </div>
+      </div>
+
+      {% else %}
+      <!-- Empty State: Model Not Loaded -->
+      <div style="padding: 1.5rem; background: #fffbeb; border: 1px solid #fde68a; border-radius: var(--radius); color: #92400e;">
+        <h3 style="font-size: 1rem; font-weight: 700; margin-bottom: 0.5rem;">⚠️ Machine Learning Model Offline</h3>
+        <p style="font-size: 0.9rem; line-height: 1.5; margin-bottom: 0.75rem;">
+          {{ ml_results.message|default('The machine learning model bundle (models/career_model.joblib) has not been trained or generated yet.') }}
+        </p>
+        <p style="font-size: 0.85rem; background: #ffffff; padding: 0.6rem 0.85rem; border-radius: 4px; border: 1px solid #fcd34d; font-family: monospace;">
+          Command to train model: <code>python train_model.py</code>
+        </p>
+        <p style="font-size: 0.85rem; margin-top: 0.5rem; color: #78350f;">
+          The platform seamlessly continues to provide full guidance using the deterministic rule-based recommendation engine.
+        </p>
+      </div>
+      {% endif %}
+    </div>
+
+    <!-- SECTION: HYBRID GUIDANCE & ENGINE COMPARISON -->
+    <div class="card hybrid-card" id="hybrid-guidance-section">
+      <div class="card-header">
+        <div>
+          <div style="display: flex; align-items: center; gap: 0.5rem;">
+            <h2 class="card-title">⚖️ DUAL-PERSPECTIVE SYNTHESIS: RULE-BASED VS. MACHINE LEARNING</h2>
+          </div>
+          <p style="font-size: 0.9rem; color: var(--text-muted); margin-top: 0.2rem;">
+            Comparing deterministic curricular heuristics with statistical machine learning classification.
+          </p>
+        </div>
+        {% if hybrid_guidance and hybrid_guidance.hybrid_available %}
+        <span class="badge {% if hybrid_guidance.consensus %}badge-primary{% else %}badge-engine{% endif %}">
+          {{ hybrid_guidance.badge }}
+        </span>
+        {% endif %}
+      </div>
+
+      <div class="hybrid-grid">
+        <!-- Rule-Based Engine Box -->
+        <div class="hybrid-box rule-box">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+            <span style="font-size: 0.8rem; font-weight: 700; color: var(--primary); text-transform: uppercase;">
+              Engine 1: Rule-Based Curricular Matching
+            </span>
+            <span class="badge" style="background: #eff6ff; color: var(--primary); border: 1px solid #bfdbfe;">
+              Deterministic
+            </span>
+          </div>
+          <div style="font-size: 1.25rem; font-weight: 800; color: var(--secondary);">
+            {{ results.primary_recommendation.career }}
+          </div>
+          <div style="font-size: 0.9rem; font-weight: 700; color: #059669; margin: 0.25rem 0;">
+            {{ results.primary_recommendation.match_percentage }}% Match Score
+          </div>
+          <p style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.5; margin-top: 0.5rem;">
+            <strong>Methodology:</strong> Explicit weighted curricular scoring (50% Skills, 30% Domain Interests, 20% Academic CGPA). Fully auditable and aligns directly with established course prerequisites.
+          </p>
+        </div>
+
+        <!-- ML Classifier Box -->
+        <div class="hybrid-box ml-box">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+            <span style="font-size: 0.8rem; font-weight: 700; color: #7c3aed; text-transform: uppercase;">
+              Engine 2: Random Forest Classification
+            </span>
+            <span class="badge" style="background: #faf5ff; color: #7c3aed; border: 1px solid #e9d5ff;">
+              Statistical
+            </span>
+          </div>
+          {% if ml_results and ml_results.available %}
+          <div style="font-size: 1.25rem; font-weight: 800; color: #4c1d95;">
+            {{ ml_results.predicted_career }}
+          </div>
+          <div style="font-size: 0.9rem; font-weight: 700; color: #7c3aed; margin: 0.25rem 0;">
+            {{ ml_results.confidence_score }}% Probability (Model Accuracy: {{ ml_results.metrics.accuracy }}%)
+          </div>
+          <p style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.5; margin-top: 0.5rem;">
+            <strong>Methodology:</strong> Multi-tree supervised classification mapping non-linear feature interactions and high-dimensional correlations across student profile records.
+          </p>
+          {% else %}
+          <div style="font-size: 1.1rem; font-weight: 700; color: var(--text-muted);">
+            ML Model Not Loaded
+          </div>
+          <p style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.5; margin-top: 0.5rem;">
+            Run <code>python train_model.py</code> to generate predictions and unlock ensemble classification metrics.
+          </p>
+          {% endif %}
+        </div>
+      </div>
+
+      {% if hybrid_guidance and hybrid_guidance.hybrid_available %}
+      <div class="hybrid-consensus-banner {% if hybrid_guidance.consensus %}agreed{% else %}divergent{% endif %}">
+        <div style="font-size: 1.25rem;">
+          {% if hybrid_guidance.consensus %}🎯{% else %}💡{% endif %}
+        </div>
+        <div style="font-size: 0.88rem; line-height: 1.5;">
+          <strong>{{ hybrid_guidance.badge }}:</strong> {{ hybrid_guidance.message }}
+          <div style="margin-top: 0.4rem; font-size: 0.82rem; opacity: 0.9;">
+            Transparent Hybrid Score: <strong>{{ hybrid_guidance.hybrid_score }}%</strong> (Calculated as {{ hybrid_guidance.formula_explanation }})
+          </div>
+        </div>
+      </div>
+      {% endif %}
+
+      <div class="notice-box-educational">
+        <strong>Why show both engines?</strong> Rule-based systems excel at transparent, deterministic prerequisite verification (ensuring students have exact course prerequisites), while machine learning models identify broader multivariate patterns and subtle correlations across large cohorts. Displaying both gives students comprehensive, dual-perspective academic decision support without confusing match score with model accuracy.
       </div>
     </div>
 

@@ -1,103 +1,131 @@
 # SMART ACADEMIC AND CAREER INTELLIGENCE PLATFORM
 **College Project-Based Learning (PBL) — Engineering Capstone**  
 **Team:** G-2  
-**Live Development URL:** `http://127.0.0.1:5000`
+**Local Development URL:** `http://127.0.0.1:5000`  
+**GitHub Repository:** [SMART-ACADEMIC-AND-CAREER-INTELLIGENCE-PLATFORM](https://github.com/mannolaakhil3-lang/SMART-ACADEMIC-AND-CAREER-INTELLIGENCE-PLATFORM)
 
 ---
 
 ## 📌 Executive Summary
 
-The **Smart Academic and Career Intelligence Platform** is an enterprise-grade, lightweight web system designed to bridge the widening gap between higher education curricula and contemporary IT industry requirements. Developed by **Team G-2**, the platform ingests multifaceted student profiles—encompassing academic performance (CGPA), technical proficiencies, soft skills, and domain passions—and computes transparent, deterministic career pathways.
+The **Smart Academic and Career Intelligence Platform** is an intelligent, dual-engine academic advisory platform engineered by **Team G-2** for engineering undergraduates, academic mentors, and placement coordinators. 
 
-Unlike opaque deep-learning models or erratic generative AI wrappers, this platform operates on an **explainable, deterministic Rule-Based Recommendation Engine**. It provides students, faculty mentors, and placement officers with verifiable **Career Match Scores**, prioritized skill-gap diagnostics, and an interactive, actionable 5-step learning roadmap tailored to each career track.
+The platform bridges the critical divide between collegiate academic curriculum and contemporary industry competency requirements. It ingests multidimensional student profiles—comprising academic standing (CGPA), branch of study, technical skills, soft skills, and domain interests—and synthesizes complementary guidance through two distinct systems:
+1. **A Transparent, Deterministic Rule-Based Recommendation Engine:** Evaluates explicit curricular prerequisites, computes verified Career Match Scores (e.g., 88% Match), isolates prioritized skill gaps, and generates a structured 5-step roadmap.
+2. **A Supervised Machine Learning Classifier (Random Forest):** Classifies student profiles into target career clusters, outputs statistical class probability distributions across candidate roles, highlights model feature importances, and reports generalization performance on held-out test splits.
+
+Both engines operate side-by-side in a **Dual-Perspective Synthesis** dashboard, providing students with transparent decision support without confusing deterministic match scores with statistical model accuracy.
 
 ---
 
-## 🎯 Problem Statement & Motivation
+## 🎯 Problem Statement & Objectives
 
-Engineering and computer science undergraduates frequently struggle with career path disorientation. The primary challenges addressed by this platform include:
-1. **Curriculum-Industry Mismatch:** Academic coursework often lags behind rapidly evolving industry tech stacks.
-2. **Ambiguity in Career Direction:** Students lack clarity on which roles (e.g., Data Analyst vs. Software Developer vs. AI/ML Engineer) align with their current competencies.
-3. **Actionable Roadmap Deficit:** Traditional career portals produce generic job listings without structured, milestone-driven remedial roadmaps.
-4. **Lack of Explainability:** Black-box recommendations provide no verifiable mathematical justification for why a student was recommended a specific path.
+### Problem Statement
+Undergraduate engineering students frequently encounter severe career trajectory disorientation due to:
+1. **Curriculum-Industry Mismatch:** College syllabi often lag behind rapid advances in software, data, and security technologies.
+2. **Role Ambiguity:** Students lack clear quantitative feedback on how their current skillset compares against prerequisites for roles such as Data Analyst, Software Developer, or AI/ML Engineer.
+3. **Actionable Roadmap Deficit:** Traditional career portals recommend job titles without sequential, prioritized skill-acquisition milestones.
+4. **Black-Box Skepticism vs. Statistical Rigor:** Rule-based tools can be rigid, while pure black-box deep learning or generative wrappers can hallucinate or fail to explain the rationale behind an advisory output.
+
+### Project Objectives
+- Ingest and normalize student academic credentials and skill vectors.
+- Implement an auditable, deterministic rule-based evaluation engine for prerequisite checking.
+- Train, evaluate, and persist a supervised `RandomForestClassifier` using `scikit-learn` to identify multivariate feature patterns across student profiles.
+- Formulate a Dual-Perspective Synthesis comparing rule-based matching with ML classification.
+- Generate an interactive 5-step learning plan with persistent client-side milestone tracking.
+- Deliver an accessible, responsive, and print-ready placement dossier.
 
 ---
 
 ## 🌟 Key Platform Features
 
-- **Transparent, Deterministic Engine:** Purely rule-based algorithmic scoring with zero hallucination and 100% reproducibility.
-- **10 Industry Career Tracks:** Comprehensive coverage of modern tech disciplines, including Data Science, Cloud/DevOps, Cybersecurity, UI/UX, and Software Engineering.
-- **Canonical Demo Calibration:** Built-in canonical benchmark student profile demonstrating exact mathematical outputs:
-  - **Data Analyst:** **88% Match**
-  - **Software Developer:** **82% Match**
-  - **AI/ML Engineer:** **76% Match**
-- **Actionable 5-Step Learning Roadmap:** Step-by-step curricular milestones with real-time browser persistence (`localStorage`) and dynamic progress tracking.
-- **Cross-Career Comparison Matrix:** Side-by-side evaluation table comparing requirements, salary benchmarks, and growth outlook across top career options.
-- **Curriculum Modal Deep-Dive:** Instant modal dialogs surfacing detailed recommended courses, project ideas, and industry certifications.
-- **Printable Placement Dossier:** Clean, professional `@media print` CSS engine formatting the report into an A4 placement portfolio sheet free of UI clutter.
-- **Robust Automated Verification:** Comprehensive `unittest` suite covering taxonomy integrity, scoring logic, and web route handlers.
+- **Dual-Engine Architecture:** Side-by-side presentation of deterministic rule-based match scores and statistical Random Forest machine learning probabilities.
+- **Auditable Match Scores:** Rule-based compatibility calculated from Skills (50%), Interests (30%), and CGPA (20%), with a canonical demo benchmark:
+  - **Data Analyst:** **88% Match** (Rank #1)
+  - **Software Developer:** **82% Match** (Rank #2)
+  - **AI/ML Engineer:** **76% Match** (Rank #3)
+- **Trained Random Forest Classifier:** Evaluates 21 normalized academic and skill features, returning ensemble class probabilities across 6 target career categories.
+- **Genuine Held-Out Test Evaluation:** Transparently reports measured test accuracy, weighted precision, weighted recall, and weighted F1-score on a held-out test split, strictly separated from individual student predictions.
+- **Prioritized Skill Gap Analysis:** Categorizes deficits into High, Medium, and Low priorities with contextual justifications.
+- **Interactive 5-Step Learning Roadmap:** Step-by-step curricular milestones with browser `localStorage` persistence and dynamic progress tracking.
+- **Career Comparison Matrix:** Side-by-side comparative table evaluating matching skills, skill gaps, and recommended skills across top candidate tracks.
+- **Printable Placement Dossier:** Clean, professional `@media print` styling that formats results into an official A4 placement dossier sheet.
+- **Resilient Error Handling & Safe Fallbacks:** Graceful degradation if the ML model is offline, friendly user error messages without exposing raw server tracebacks.
 
 ---
 
-## ⚙️ Mathematical Recommendation Methodology
-
-The platform evaluates student profiles against benchmark industry taxonomy vectors using a normalized, multi-factor scoring model:
-
-$$\text{Career Match Score} = (0.50 \times S_{\text{skills}}) + (0.30 \times S_{\text{interests}}) + (0.20 \times S_{\text{academics}}) + B_{\text{pref}}$$
-
-### 1. Skill Alignment Factor ($50\%$ Weight)
-Matches student technical and soft skills against core role prerequisites and secondary recommended skills:
-- **Core Requirements:** Weighted at $70\%$ of the skill component.
-- **Secondary / Recommended Skills:** Weighted at $30\%$ of the skill component.
-- Token normalization handles case-insensitivity, synonyms (e.g., `ML` $\rightarrow$ `Machine Learning`), and whitespace variations.
-
-### 2. Domain Interest Alignment ($30\%$ Weight)
-Evaluates student career passions, hackathon domains, and project interests against role-specific affinity vectors using set-intersection ratios.
-
-### 3. Academic Standing Factor ($20\%$ Weight)
-Normalized against standard 10.0 CGPA scale:
-$$S_{\text{academics}} = \min\left(100, \left(\frac{\text{CGPA}}{10.0}\right) \times 100\right)$$
-Students with CGPA $\ge 8.0$ receive eligibility clearance for tier-1 technical roles.
-
-### 4. Career Preference Affinity Bonus ($B_{\text{pref}}$)
-When a student explicitly targets a career track that also exhibits strong skill viability ($\ge 65\%$), an affinity bonus (up to $+5\%$) is applied, bounded at $100\%$.
-
----
-
-## 🧭 The 6-Stage Intelligence Workflow
+## ⚙️ System Architecture & Recommendation Engines
 
 ```mermaid
-graph LR
-    A[1. Profile Ingestion] --> B[2. Rule-Based Evaluation]
-    B --> C[3. Gap Diagnostics]
-    C --> D[4. Comparative Ranking]
-    D --> E[5. Interactive Roadmap]
-    E --> F[6. Career Dossier Export]
+graph TD
+    A[Student Input Profile: CGPA, Branch, Skills, Interests] --> B[Input Parsing & Normalization]
+    B --> C[Engine 1: Rule-Based Curricular Engine]
+    B --> D[Feature Engineering: 21 Binary & Numeric Features]
+    D --> E[Engine 2: Random Forest Classifier]
+    C --> F[Career Match Score: 50% Skills + 30% Interests + 20% CGPA]
+    E --> G[ML Prediction: Class Probability Distribution & Feature Importances]
+    F --> H[Dual-Perspective Synthesis & Consensus Guidance]
+    G --> H
+    H --> I[Interactive Dashboard: Skill Gaps, Roadmap, Comparison Matrix]
 ```
 
-1. **Profile Ingestion:** Student submits CGPA, branch, technical skills, soft skills, and domain interests via a validated form.
-2. **Rule-Based Evaluation:** Engine executes mathematical scoring across all 10 career taxonomy matrices.
-3. **Skill Gap Diagnostics:** System isolates exact missing competencies, categorizing them into High, Medium, and Foundational priorities.
-4. **Comparative Ranking:** Top 3 career tracks are isolated with detailed match breakdowns alongside an overall taxonomy matrix.
-5. **Interactive Roadmap:** Student checks off 5 sequential learning milestones persisted in client-side storage.
-6. **Career Dossier Export:** Generation of an A4-optimized printable placement portfolio.
+### 1. How the Rule-Based Engine Works
+The rule-based engine computes a deterministic compatibility percentage for each career in the taxonomy:
+$$\text{Career Match Score} = (0.50 \times S_{\text{skills}}) + (0.30 \times S_{\text{interests}}) + (0.20 \times S_{\text{academics}}) + B_{\text{pref}}$$
+- **Skill Factor ($50\%$):** Matches student skills against core requirements ($70\%$ weight) and recommended secondary skills ($30\%$ weight).
+- **Interest Factor ($30\%$):** Measures set overlap between student domain passions and career focus areas.
+- **Academic Factor ($20\%$):** Normalizes academic performance: $S_{\text{academics}} = \min(100, (\text{CGPA} / 10.0) \times 100)$.
+- **Preference Bonus ($B_{\text{pref}}$):** Applies up to $+5\%$ if the student's stated preference aligns with high viable skill match ($\ge 65\%$).
+
+### 2. How the Machine Learning Model Works
+- **Algorithm:** Supervised `RandomForestClassifier` (`n_estimators=100`, `max_depth=10`, `random_state=42`, `class_weight='balanced'`).
+- **Input Features (21):**
+  - Continuous: `cgpa`
+  - Binary Indicators: `python`, `sql`, `java`, `cpp`, `javascript`, `machine_learning`, `statistics`, `data_visualization`, `communication`, `problem_solving`, `leadership`, `cloud_computing`, `cybersecurity`, `ui_ux_design`
+  - Domain Interest Indicators: `technology_interest`, `data_science_interest`, `business_interest`, `design_interest`, `research_interest`, `security_interest`
+- **Output:** Predicted career class and calibrated posterior class probabilities across all 6 target classes.
+- **Feature Contribution:** Reports Gini impurity feature importances for active student attributes (clearly disclosed as model split indicators, not causation).
 
 ---
 
-## 🏢 Taxonomy: 10 Supported Career Tracks
+## 📊 Dataset Source, Training & Limitations
 
-| Career Track | Core Industry Competencies | Typical Focus Area |
-| :--- | :--- | :--- |
-| **Data Analyst** | Python, SQL, Excel, Statistics, Power BI/Tableau | Data insights, reporting, dashboards |
-| **Software Developer** | Java/C++, Python, OOP, Data Structures, Git, SQL | Core systems, enterprise software, APIs |
-| **AI/ML Engineer** | Python, Machine Learning, Deep Learning, Math/Stats | Predictive modeling, neural nets, MLOps |
-| **Cybersecurity Analyst** | Networking, Linux, Ethical Hacking, SIEM, Firewalls | Threat detection, incident response, audits |
-| **UI/UX Designer** | Figma, Wireframing, Prototyping, CSS, User Research | Design systems, user journeys, usability |
-| **Cloud/DevOps Engineer** | Docker, Kubernetes, Linux, CI/CD, AWS/Azure | Infrastructure as Code, automation, cloud |
-| **Mobile App Developer** | Flutter/React Native, Kotlin/Swift, REST APIs, Git | Cross-platform & native mobile apps |
-| **Full Stack Web Developer** | JavaScript/TypeScript, React/Vue, Node.js, HTML/CSS | Modern end-to-end web architectures |
-| **Data Engineer** | Python, SQL, Spark, Data Warehousing, Airflow, ETL | Distributed data pipelines & platforms |
-| **Business Analyst** | Requirement Analysis, Agile, SQL, Excel, Communication | Business-tech translation, process mapping |
+### Dataset Description
+- **Location:** `data/career_dataset.csv`
+- **Total Records:** 600 student profile records.
+- **Classes (6 Balanced Classes, 100 per class):**
+  1. `AI/ML Engineer` (100 records)
+  2. `Business Analyst` (100 records)
+  3. `Cybersecurity Analyst` (100 records)
+  4. `Data Analyst` (100 records)
+  5. `Software Developer` (100 records)
+  6. `UI/UX Designer` (100 records)
+- **Generation Methodology:** Synthetic probabilistic sampling modeling realistic engineering student profiles (`data/generate_dataset.py`, random seed 42).
+
+### Evaluation & Measured Held-Out Performance
+The model is trained on a $75\%$ stratified training set (450 records) and evaluated on a held-out $25\%$ test set (150 records):
+- **Model Test Accuracy:** **86.67%**
+- **Weighted Precision:** **86.40%**
+- **Weighted Recall:** **86.67%**
+- **Weighted F1-Score:** **86.10%**
+
+Confusion Matrix on Unseen Test Split ($N=150$):
+```
+                       [AI/ML] [BA] [Cyber] [DA] [SWE] [UI/UX]
+AI/ML Engineer            24     0     0      1     0     0
+Business Analyst           0    21     0      3     0     1
+Cybersecurity Analyst      0     0    23      0     2     0
+Data Analyst               6     3     1     14     1     0
+Software Developer         0     1     1      0    23     0
+UI/UX Designer             0     0     0      0     0    25
+```
+
+### Critical Academic Limitations & Ethical Disclosures
+> [!IMPORTANT]
+> - **Synthetic Dataset:** The dataset is synthetic and designed strictly for academic demonstration and validation in a college PBL capstone.
+> - **No Real-World Validation Claim:** High performance on synthetic test data demonstrates internal model consistency and algorithmic validity; it does not claim clinical or real-world validation on actual university alumni.
+> - **Probability $\ne$ Certainty:** ML prediction confidence (e.g., $26.6\%$) is a statistical distribution across candidate classes from decision trees, not a guarantee of professional success.
+> - **Match Score $\ne$ Model Accuracy:** The rule-based 88% Match is a deterministic curriculum overlap score, completely distinct from the 86.67% test accuracy of the Random Forest model.
 
 ---
 
@@ -105,12 +133,15 @@ graph LR
 
 | Layer | Technology | Rationale / Benefits |
 | :--- | :--- | :--- |
-| **Backend Framework** | **Python Flask 3.0+** | Minimalist, ultra-fast routing, lightweight memory footprint. |
-| **Recommendation Engine** | **Pure Python 3** | Deterministic, procedural/OOP hybrid, zero external AI API latency. |
-| **Frontend Templates** | **Jinja2 + HTML5 Semantic** | Server-side rendering, accessible markup, no bloated client bundles. |
-| **Styling & Responsive Layout** | **Modern Vanilla CSS3** | Custom design system, CSS Grid/Flexbox, print media styles. |
-| **Client-Side Dynamics** | **Vanilla ES6+ JavaScript** | Micro-interactions, modal management, `localStorage` persistence. |
-| **Testing & Quality Assurance** | **Python `unittest`** | Zero-dependency verification for taxonomy, routes, and math logic. |
+| **Backend Web Framework** | **Python Flask 3.0+** | Minimalist, clean WSGI routing, rapid response times. |
+| **Machine Learning Engine** | **scikit-learn 1.3+** | Industry standard `RandomForestClassifier`, reproducible pipelines, feature importances. |
+| **Data Processing & Vectors** | **pandas 2.0+ & numpy 1.24+** | High-performance feature vectorization and dataset handling. |
+| **Model Persistence** | **joblib 1.3+** | Fast, secure serialization for scikit-learn models and metadata bundles. |
+| **Recommendation Engine** | **Pure Python 3** | Deterministic, rule-based algorithmic scoring with zero external API dependencies. |
+| **Frontend Templates** | **Jinja2 + Semantic HTML5** | Server-side rendering, accessible layout, zero bundle overhead. |
+| **Styling & Layout** | **Modern Vanilla CSS3** | Custom design system, CSS Grid/Flexbox, `@media print` dossier styles. |
+| **Client-Side Dynamics** | **Vanilla ES6+ JavaScript** | Micro-interactions, processing overlay, `localStorage` milestone persistence. |
+| **Test Automation** | **Python `unittest`** | Automated testing suite covering routes, math engine, ML model, and edge cases. |
 
 ---
 
@@ -119,23 +150,34 @@ graph LR
 ```
 career-intelligence-platform/
 │
-├── app.py                      # Flask routing, error handlers, and HTTP controllers
-├── recommendation_engine.py    # Deterministic rule-based engine & 10-career taxonomy
-├── requirements.txt            # Python dependencies (Flask >= 3.0.0)
-├── README.md                   # Comprehensive PBL documentation and viva guide
-├── .gitignore                  # Git ignore rules for Python bytecode and envs
+├── app.py                      # Flask web application routes, error handlers, and controllers
+├── ml_model.py                 # ML feature extraction, training, evaluation, predictor service
+├── train_model.py              # Model training script, evaluation pipeline, and demo inference
+├── recommendation_engine.py    # Deterministic rule-based engine & 6-career taxonomy profiles
+├── requirements.txt            # Minimal Python dependencies (Flask, scikit-learn, pandas, numpy, joblib)
+├── README.md                   # Comprehensive PBL capstone documentation and viva reference
+├── .gitignore                  # Git ignore rules for bytecode, virtual environments, and local logs
+│
+├── data/
+│   ├── career_dataset.csv      # 600 synthetic student profile records across 6 career domains
+│   └── generate_dataset.py     # Reproducible synthetic dataset generator script (seed 42)
+│
+├── models/
+│   ├── career_model.joblib     # Serialized Random Forest model bundle & feature schemas
+│   └── model_metrics.json      # Evaluated test metrics, classification report, and confusion matrix
 │
 ├── templates/
-│   ├── index.html              # Landing page with workflow stepper, features, tech stack
-│   ├── analysis.html           # Profile assessment form with demo prefill and error alerts
-│   └── results.html            # Results dashboard with metrics, interactive plan, modals
+│   ├── index.html              # Landing page with workflow stepper, features, and quick links
+│   ├── analysis.html           # Student profile input form with prefill, validation, and spinner
+│   └── results.html            # Comprehensive results dashboard (Profile, ML, Rule-based, Roadmap)
 │
 ├── static/
 │   ├── style.css               # Design system, responsive grids, progress bars, @media print
-│   └── script.js               # Modal toggles, demo loaders, localStorage plan persistence
+│   └── script.js               # Client controller, demo loaders, localStorage plan persistence
 │
 └── tests/
-    └── test_platform.py        # 9 automated unit tests for math engine and web routes
+    ├── test_platform.py        # 9 unit tests for rule-based engine and Flask routes
+    └── test_ml_model.py        # 18 unit tests for ML pipeline, dataset, inference, and error handling
 ```
 
 ---
@@ -143,69 +185,102 @@ career-intelligence-platform/
 ## 🚀 Installation & Local Execution
 
 ### 1. Prerequisites
-- **Python 3.8+** installed on your operating system (`python --version`).
+- **Python 3.8+** installed (`python --version`).
 - **pip** package manager available.
 
-### 2. Navigate to Project Directory
-```bash
-cd career-intelligence-platform
+### 2. Navigate to Project Directory (Windows PowerShell)
+```powershell
+cd C:\Users\manno\.gemini\antigravity\scratch\career-intelligence-platform
 ```
 
-### 3. Install Dependencies
-```bash
+### 3. Install Required Dependencies
+```powershell
 pip install -r requirements.txt
 ```
 
-### 4. Run the Application
-```bash
+### 4. (Optional) Re-Train the Random Forest Model
+To regenerate the dataset and train the model from scratch:
+```powershell
+python train_model.py
+```
+This trains the model, saves `models/career_model.joblib` and `models/model_metrics.json`, and outputs the evaluation report.
+
+### 5. Launch the Web Application
+```powershell
 python app.py
 ```
 
-The Flask development server will launch at:
+Open your browser and navigate to:
 👉 **`http://127.0.0.1:5000`**
 
 ---
 
 ## 🧪 Automated Testing Suite
 
-The repository includes a comprehensive automated test suite verifying both engine calculations and Flask HTTP routing:
+The repository includes a comprehensive 27-test automated verification suite:
 
-```bash
-python -m unittest tests/test_platform.py
+```powershell
+python -m unittest discover -s tests -p "test_*.py"
 ```
 
-### Test Coverage Highlights:
-- `test_canonical_demo_student`: Validates that the benchmark profile produces exact scores: **Data Analyst (88%)**, **Software Developer (82%)**, **AI/ML Engineer (76%)**.
-- `test_taxonomy_integrity`: Validates that all 10 careers have core requirements, 5-step learning plans, and prioritized skill gaps.
-- `test_custom_student_profile`: Confirms mathematical bounds ($0 \le \text{score} \le 100$) across edge profiles.
-- `test_index_route`: Confirms HTTP 200 and Team G-2 branding.
-- `test_analysis_get_route`: Validates input form rendering.
-- `test_analysis_prefill_route`: Validates one-click `?prefill=true` parameter loading.
-- `test_analyze_post_valid_demo_student`: Validates end-to-end form submission and results generation.
-- `test_analyze_validation_errors`: Validates server-side input rejection for missing names, skills, and out-of-range CGPA ($> 10.0$ or $< 0.0$).
-- `test_direct_results_get_redirects`: Confirms graceful redirect for direct `/results` URL navigation.
+### Test Suite Breakdown:
+- **`tests/test_platform.py` (9 Tests):**
+  - `test_canonical_demo_student`: Verifies benchmark student scores (Data Analyst 88%, Software Developer 82%, AI/ML Engineer 76%).
+  - `test_taxonomy_integrity`: Validates taxonomy structures, core requirements, and 5-step learning roadmaps.
+  - `test_custom_student_profile`: Verifies mathematical bounds on custom student profiles.
+  - `test_index_route`, `test_analysis_get_route`, `test_analysis_prefill_route`: Validates page rendering and parameter prefill.
+  - `test_analyze_post_valid_demo_student`: Tests form submission and response payload.
+  - `test_analyze_validation_errors`: Validates server-side rejection for missing names, skills, or invalid CGPA ($> 10.0$ or $< 0.0$).
+  - `test_direct_results_get_redirects`: Confirms safe redirection when navigating to `/results` via GET.
+- **`tests/test_ml_model.py` (18 Tests):**
+  - `test_load_dataset_success`: Confirms CSV loading and expected schema columns.
+  - `test_load_dataset_missing_file_raises_error`: Validates `FileNotFoundError` on non-existent dataset.
+  - `test_load_dataset_missing_columns_raises_error`: Validates `ValueError` on corrupt schema.
+  - `test_preprocess_data`: Checks feature/label separation and verifies absence of NaNs.
+  - `test_extract_features_valid_student`: Tests feature vector generation on structured student dictionary.
+  - `test_extract_features_string_inputs`: Validates comma-separated skill/interest parsing.
+  - `test_extract_features_invalid_cgpa_fallback`: Confirms safe fallback for non-numeric CGPA.
+  - `test_train_model_returns_fitted_classifier`: Verifies scikit-learn classifier training.
+  - `test_evaluate_model_metrics`: Tests calculation of accuracy, precision, recall, F1, and confusion matrix.
+  - `test_model_file_exists_and_loads`: Validates model bundle loading via `CareerMLPredictor`.
+  - `test_predict_career_on_demo_student`: Verifies inference outputs on demo student profile.
+  - `test_missing_model_file_graceful_handling`: Validates graceful fallback when model bundle is deleted.
+  - `test_hybrid_guidance_consensus_agreed`: Tests consensus badge and hybrid scoring when engines agree.
+  - `test_hybrid_guidance_divergent`: Tests dual-perspective reporting when engines output differing careers.
+  - `test_hybrid_guidance_when_ml_offline`: Confirms full functionality of rule-based engine when ML is offline.
+  - `test_demo_route_presents_both_rule_and_ml_sections`: Validates full integration on `/demo` route.
+  - `test_analyze_post_executes_ml_and_rule_analysis`: Validates end-to-end form POST with ML execution.
+  - `test_error_handler_404_clean_response`: Verifies 404 error page returns without exposing server stack traces.
 
 ---
 
 ## 🎓 PBL Presentation & Viva Q&A Guide
 
-When presenting this project to evaluators and project review panels:
-
-#### Q1: Why did Team G-2 use a Rule-Based Recommendation Engine instead of a trained Machine Learning model?
+#### Q1: What is the core innovation of Team G-2's project?
 > **Answer:**  
-> In academic and career counseling, **transparency, explainability, and determinism** are paramount. Black-box ML models (e.g., neural networks or LLMs) suffer from hallucination, training bias, unexplainable predictions, and "cold-start" degradation on rare skill profiles. Our rule-based mathematical model guarantees that every percentage score is directly traceable to specific course credits, skill overlaps, and CGPA metrics.
+> Our core innovation is the **Dual-Perspective Architecture**. Rather than forcing a choice between a rigid rule-based algorithm or an opaque black-box ML model, we deploy both in parallel:
+> - The **Rule-Based Engine** verifies deterministic curricular prerequisites (ensuring students satisfy explicit course prerequisites).
+> - The **Random Forest Classifier** detects non-linear feature interactions and broader cohort patterns across high-dimensional skill spaces.
+> Both results are presented transparently side-by-side on the dashboard.
 
-#### Q2: How does the platform store learning progress without an external database?
+#### Q2: Why use a Random Forest Classifier instead of a Deep Neural Network?
 > **Answer:**  
-> To remain ultra-lightweight, zero-maintenance, and privacy-preserving, the platform utilizes browser **`localStorage`** namespaced by student name and target career (`g2_plan_progress_[student]_[career]`). Students can close their browser, return days later, and find their completed milestones intact without requiring user accounts or database overhead.
+> For tabular, multi-attribute student records with mixed continuous (CGPA) and discrete binary indicators (skills/interests), **Random Forest** is empirically superior to deep learning:
+> 1. It is resilient to overfitting on small-to-medium datasets ($N=600$).
+> 2. It produces calibrated class probability estimates without requiring complex softmax temperature scaling.
+> 3. It generates interpretable feature importance metrics based on Gini impurity reduction.
+> 4. It trains in sub-second time on standard hardware with zero GPU dependency.
 
-#### Q3: How is the canonical demo calibrated?
+#### Q3: Why is the rule-based match score 88% while the ML confidence is 26.6%?
 > **Answer:**  
-> The canonical demo student (*Demo Student*, CSE 3rd Year, CGPA 8.2, Skills: Python, SQL, Problem Solving) is calibrated mathematically against our 10-career matrix to produce a verified reference benchmark: **88% Data Analyst**, **82% Software Developer**, and **76% AI/ML Engineer**.
+> They measure fundamentally different mathematical concepts:
+> - **Rule-Based Match Score (88%):** A deterministic overlap percentage showing that the student meets 88% of the specific curricular prerequisites for Data Analyst.
+> - **ML Prediction Confidence (26.6%):** The proportion of decision trees in the ensemble voting for Software Developer in a 6-class problem. If random guessing yields $16.7\%$ ($1/6$), a $26.6\%$ probability indicates a distinct statistical preference in a competitive multi-class space.
+> The platform clearly labels these differences to prevent user confusion.
 
 ---
 
 ## 👥 Project Team: G-2
 - **Academic Domain:** Computer Science & Engineering / Information Technology
-- **Project Type:** Project-Based Learning (PBL) Capstone Platform
-- **Year of Submission:** 2026
+- **Project Type:** Project-Based Learning (PBL) Engineering Capstone
+- **Year:** 2026

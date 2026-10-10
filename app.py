@@ -7,6 +7,7 @@ Team: G-2
 from typing import Dict, Any
 from flask import Flask, render_template, request, redirect, url_for
 from recommendation_engine import calculate_career_match, parse_list_input
+from ml_model import predict_career, compute_hybrid_guidance
 
 app = Flask(__name__)
 
@@ -70,7 +71,28 @@ def demo():
         student_interests=interests_list,
         career_preference=DEMO_STUDENT["career_preference"]
     )
-    return render_template("results.html", results=results, is_demo=True)
+
+    # Execute ML Prediction & Hybrid Consensus
+    ml_student_payload = {
+        "name": DEMO_STUDENT["name"],
+        "branch": DEMO_STUDENT["branch"],
+        "academic_year": DEMO_STUDENT["academic_year"],
+        "cgpa": cgpa_val,
+        "skills": skills_list,
+        "soft_skills": soft_skills_list,
+        "interests": interests_list,
+        "career_preference": DEMO_STUDENT["career_preference"]
+    }
+    ml_results = predict_career(ml_student_payload)
+    hybrid_guidance = compute_hybrid_guidance(results, ml_results)
+
+    return render_template(
+        "results.html",
+        results=results,
+        ml_results=ml_results,
+        hybrid_guidance=hybrid_guidance,
+        is_demo=True
+    )
 
 
 @app.route("/results", methods=["GET"])
@@ -180,7 +202,47 @@ def analyze():
         career_preference=career_preference
     )
 
-    return render_template("results.html", results=results, is_demo=False)
+    # Execute ML Career Prediction & Hybrid Consensus
+    student_payload = {
+        "name": name,
+        "branch": branch,
+        "academic_year": academic_year,
+        "cgpa": cgpa_val,
+        "skills": skills_list,
+        "soft_skills": soft_skills_list,
+        "interests": interests_list,
+        "career_preference": career_preference
+    }
+    ml_results = predict_career(student_payload)
+    hybrid_guidance = compute_hybrid_guidance(results, ml_results)
+
+    return render_template(
+        "results.html",
+        results=results,
+        ml_results=ml_results,
+        hybrid_guidance=hybrid_guidance,
+        is_demo=False
+    )
+
+
+@app.errorhandler(404)
+def not_found_error(error):
+    """Handle 404 with friendly user message and no exposed stack trace."""
+    return render_template(
+        "analysis.html",
+        data=DEMO_STUDENT,
+        error="The requested page was not found (404). You have been safely returned to the analysis portal."
+    ), 404
+
+
+@app.errorhandler(500)
+def internal_error(error):
+    """Handle 500 without exposing server stack traces to users."""
+    return render_template(
+        "analysis.html",
+        data=DEMO_STUDENT,
+        error="An unexpected server error occurred (500). Please check your inputs and try again."
+    ), 500
 
 
 if __name__ == "__main__":
